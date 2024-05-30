@@ -4,7 +4,7 @@ import client from '..';
 
 const getStatus = async () => {
   const { data } = await client.get(
-    `${process.env.REACT_APP_HOST_API}/auth/status`,
+    `${import.meta.env.VITE_HOST_API}/auth/status`,
   );
 
   return data;

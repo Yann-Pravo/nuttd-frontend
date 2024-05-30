@@ -1,5 +1,7 @@
+import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
+import useLoginLocal from 'api/auth/loginLocal';
 import { z } from 'zod';
 
 const Local = () => {
@@ -7,11 +9,23 @@ const Local = () => {
     defaultValues: {
       email: '',
       password: '',
+      rememberMe: false,
     },
     validatorAdapter: zodValidator,
     onSubmit: async ({ value }) => {
       console.log(value);
+      login();
     },
+  });
+
+  const {
+    isError,
+    isFetching,
+    refetch: login,
+  } = useLoginLocal('login', {
+    email: form.state.values.email,
+    password: form.state.values.password,
+    rememberMe: form.state.values.rememberMe,
   });
 
   return (
@@ -97,20 +111,26 @@ const Local = () => {
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <input
-            id="remember-me"
-            name="remember-me"
-            type="checkbox"
-            className="size-4 rounded border-gray-300 text-pink-600 focus:ring-pink-600"
-          />
-          <label
-            htmlFor="remember-me"
-            className="ml-3 block text-sm leading-6 text-gray-900"
-          >
-            Remember me
-          </label>
-        </div>
+        <form.Field name="rememberMe">
+          {(field) => (
+            <div className="flex items-center">
+              <input
+                id={field.name}
+                name={field.name}
+                checked={field.state.value}
+                onChange={(e) => field.handleChange(e.target.checked)}
+                type="checkbox"
+                className="size-4 rounded border-gray-300 text-pink-600 focus:ring-pink-600"
+              />
+              <label
+                htmlFor={field.name}
+                className="ml-3 block text-sm leading-6 text-gray-900"
+              >
+                Remember me
+              </label>
+            </div>
+          )}
+        </form.Field>
 
         <div className="text-sm leading-6">
           <a
@@ -125,9 +145,18 @@ const Local = () => {
       <div>
         <button
           type="submit"
-          className="flex w-full justify-center rounded-md bg-pink-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
+          className="flex w-full justify-center rounded-md bg-pink-600 px-3 py-1.5 hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
         >
-          Sign in
+          {isFetching ? (
+            <span className="relative flex size-6 items-center justify-center">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-pink-400 opacity-75"></span>
+              <span className="relative inline-flex size-3 rounded-full bg-pink-500"></span>
+            </span>
+          ) : (
+            <span className="text-sm font-semibold leading-6 text-white">
+              Sign in
+            </span>
+          )}
         </button>
       </div>
     </form>

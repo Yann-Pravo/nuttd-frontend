@@ -7,11 +7,9 @@ import Signin from './containers/Authentication/Signin';
 import Home from 'containers/Home';
 
 const App = () => {
-  console.log('meeeh');
-  const { isPending, isError, data, error } = useGetStatus();
-  console.log({ isPending, isError, data, error });
+  const { isPending, isError } = useGetStatus();
   if (isPending) return null;
-  if (error) return <Signin />;
+  if (isError) return <Signin />;
 
   return <Home />;
 };
