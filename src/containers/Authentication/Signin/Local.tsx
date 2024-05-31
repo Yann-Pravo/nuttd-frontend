@@ -1,25 +1,28 @@
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { toast } from 'sonner';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
 import useLoginLocal from 'api/auth/loginLocal';
 import { z } from 'zod';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from 'routes/paths';
+import useGetStatus from 'api/auth/getStatus';
 
 const Local = () => {
+  const navigate = useNavigate();
   const form = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'test@nuttdd.io',
+      password: 'passwordtest',
       rememberMe: false,
     },
     validatorAdapter: zodValidator,
-    onSubmit: async ({ value }) => {
-      console.log(value);
-      login();
-    },
+    onSubmit: () => login(),
   });
 
   const {
     isError,
+    isSuccess,
     isFetching,
     refetch: login,
   } = useLoginLocal('login', {
@@ -27,6 +30,36 @@ const Local = () => {
     password: form.state.values.password,
     rememberMe: form.state.values.rememberMe,
   });
+
+  // const {
+  //   isFetching: isFetchingStatus,
+  //   refetch: refetchStatus,
+  //   isSuccess: isStatusOk,
+  //   isError: isErrorStatus,
+  // } = useGetStatus('getdStatus', { enabled: false, retry: false });
+
+  // console.log({ isErrorStatus });
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('Wrong credentials');
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('You are logged in!');
+      // refetchStatus();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
+
+  // useEffect(() => {
+  //   if (isStatusOk) {
+  //     navigate(ROUTES.HOME);
+  //   }
+  // }),
+  //   [isStatusOk];
 
   return (
     <form

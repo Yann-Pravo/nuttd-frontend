@@ -3,15 +3,16 @@ import './App.css';
 import React from 'react';
 
 import useGetStatus from './api/auth/getStatus';
-import Signin from './containers/Authentication/Signin';
-import Home from 'containers/Home';
+import Router from 'routes';
 
-const App = () => {
-  const { isPending, isError } = useGetStatus();
-  if (isPending) return null;
-  if (isError) return <Signin />;
+const App: React.FC = () => {
+  const { isFetching, isSuccess } = useGetStatus();
+  console.log({ isFetching });
+  if (isFetching) return null;
 
-  return <Home />;
+  console.log('isSuccess');
+
+  return <Router isAuthenticated={isSuccess} />;
 };
 
 export default App;

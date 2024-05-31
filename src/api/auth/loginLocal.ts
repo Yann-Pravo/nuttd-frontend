@@ -9,16 +9,13 @@ interface LoginProps {
 }
 
 const loginLocal = async ({ email, password }: LoginProps) => {
-  console.log({ email, password });
   const { data } = await client.post(
-    `${import.meta.env.VITE_HOST_API}/auth/login`,
+    `${import.meta.env.VITE_HOST_API}/api/auth/login`,
     {
       email,
       password,
-    },
+    }
   );
-
-  console.log(data);
 
   return data;
 };
