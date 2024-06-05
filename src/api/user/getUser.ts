@@ -14,7 +14,7 @@ export interface User {
   nuts: string[];
 }
 
-const getUser = async () => {
+const getUser = async (): Promise<User> => {
   const { data } = await client.get('/users/me');
 
   return data;

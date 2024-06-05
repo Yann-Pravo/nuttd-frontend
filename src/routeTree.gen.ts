@@ -11,22 +11,15 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as RootRouteImport } from './routes/root-route'
-import { Route as PathsImport } from './routes/paths'
+import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
-import { Route as PublicRoutesImport } from './routes/PublicRoutes'
-import { Route as PrivateRoutesImport } from './routes/PrivateRoutes'
-import { Route as IndexImport } from './routes/index'
+import { Route as AuthImport } from './routes/_auth'
+import { Route as AuthIndexImport } from './routes/_auth.index'
 
 // Create/Update Routes
 
-const RootRouteRoute = RootRouteImport.update({
-  path: '/root-route',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const PathsRoute = PathsImport.update({
-  path: '/paths',
+const SignupRoute = SignupImport.update({
+  path: '/signup',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -35,44 +28,25 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const PublicRoutesRoute = PublicRoutesImport.update({
-  path: '/PublicRoutes',
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRoute,
 } as any)
 
-const PrivateRoutesRoute = PrivateRoutesImport.update({
-  path: '/PrivateRoutes',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const IndexRoute = IndexImport.update({
+const AuthIndexRoute = AuthIndexImport.update({
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/PrivateRoutes': {
-      id: '/PrivateRoutes'
-      path: '/PrivateRoutes'
-      fullPath: '/PrivateRoutes'
-      preLoaderRoute: typeof PrivateRoutesImport
-      parentRoute: typeof rootRoute
-    }
-    '/PublicRoutes': {
-      id: '/PublicRoutes'
-      path: '/PublicRoutes'
-      fullPath: '/PublicRoutes'
-      preLoaderRoute: typeof PublicRoutesImport
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -82,19 +56,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/paths': {
-      id: '/paths'
-      path: '/paths'
-      fullPath: '/paths'
-      preLoaderRoute: typeof PathsImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
-    '/root-route': {
-      id: '/root-route'
-      path: '/root-route'
-      fullPath: '/root-route'
-      preLoaderRoute: typeof RootRouteImport
-      parentRoute: typeof rootRoute
+    '/_auth/': {
+      id: '/_auth/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthIndexImport
+      parentRoute: typeof AuthImport
     }
   }
 }
@@ -102,12 +76,9 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-  IndexRoute,
-  PrivateRoutesRoute,
-  PublicRoutesRoute,
+  AuthRoute: AuthRoute.addChildren({ AuthIndexRoute }),
   LoginRoute,
-  PathsRoute,
-  RootRouteRoute,
+  SignupRoute,
 })
 
 /* prettier-ignore-end */
@@ -118,31 +89,26 @@ export const routeTree = rootRoute.addChildren({
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/PrivateRoutes",
-        "/PublicRoutes",
+        "/_auth",
         "/login",
-        "/paths",
-        "/root-route"
+        "/signup"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/PrivateRoutes": {
-      "filePath": "PrivateRoutes.tsx"
-    },
-    "/PublicRoutes": {
-      "filePath": "PublicRoutes.tsx"
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
+        "/_auth/"
+      ]
     },
     "/login": {
       "filePath": "login.tsx"
     },
-    "/paths": {
-      "filePath": "paths.ts"
+    "/signup": {
+      "filePath": "signup.tsx"
     },
-    "/root-route": {
-      "filePath": "root-route.tsx"
+    "/_auth/": {
+      "filePath": "_auth.index.tsx",
+      "parent": "/_auth"
     }
   }
 }

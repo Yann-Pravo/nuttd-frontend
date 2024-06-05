@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import client from '..';
 
-interface StatusProps {
+interface Status {
   isConnected: boolean;
 }
 
-const getStatus = async (): Promise<StatusProps> => {
+const getStatus = async (): Promise<Status> => {
   const { data } = await client.get('/auth/status');
 
   return data;

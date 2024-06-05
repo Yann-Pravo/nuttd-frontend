@@ -1,16 +1,19 @@
-import { toast } from 'sonner';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
-import useLoginLocal from 'api/auth/loginLocal';
 import { z } from 'zod';
 import { useEffect } from 'react';
-import useGetStatus from 'api/auth/getStatus';
-import { queryClient } from 'api';
-import { useNavigate } from 'react-router-dom';
-import ROUTES from 'routes/paths';
+import ROUTES from 'constants/paths';
+import { useAuth } from 'contexts/auth';
+import { Route } from 'routes/login';
+import { useRouter } from '@tanstack/react-router';
+import { Button } from '@/components/ui/button';
 
 const Local = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
+  const search = Route.useSearch();
+  const navigate = Route.useNavigate();
+
+  const { login, isLoading, isAuthenticated } = useAuth();
   const form = useForm({
     defaultValues: {
       email: 'test@nuttdd.io',
@@ -18,54 +21,20 @@ const Local = () => {
       rememberMe: false,
     },
     validatorAdapter: zodValidator,
-    onSubmit: () => login(),
+    onSubmit: ({ value }) => login(value),
   });
 
-  const {
-    isError,
-    isSuccess,
-    isFetching,
-    data,
-    refetch: login,
-  } = useLoginLocal('login', {
-    email: form.state.values.email,
-    password: form.state.values.password,
-    rememberMe: form.state.values.rememberMe,
-  });
-
-  // console.log({ data });
-
-  // useGetStatus('getStatusa', {
-  //   enabled: Boolean(data?.accessToken),
-  // });
-
   useEffect(() => {
-    if (isError) {
-      toast.error('Wrong credentials');
+    const redirect = async () => {
+      await router.invalidate();
+      await navigate({ to: search.redirect || ROUTES.HOME });
+    };
+
+    if (isAuthenticated) {
+      redirect();
     }
-  }, [isError]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      console.log({ isSuccess });
-      queryClient.invalidateQueries({
-        queryKey: ['getStatus'],
-        exact: true,
-      });
-
-      navigate(ROUTES.HOME);
-
-      toast.error('You are logged in!');
-    }
-  }, [isSuccess]);
-
-  // useEffect(() => {
-  //   if (!isFetching && isSuccess && data && !data.isConnected) {
-  //     toast.success('You are logged in!');
-  //     getStatus();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isSuccess, isFetching]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
 
   return (
     <form
@@ -182,21 +151,22 @@ const Local = () => {
       </div>
 
       <div>
-        <button
+        <Button
+          disabled={isLoading}
           type="submit"
-          className="flex w-full justify-center rounded-md bg-pink-600 px-3 py-1.5 hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
+          width="full"
+          // className="flex w-full justify-center rounded-md bg-pink-600 px-3 py-1.5 hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
         >
-          {isFetching ? (
+          {isLoading ? (
             <span className="relative flex size-6 items-center justify-center">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-pink-400 opacity-75"></span>
               <span className="relative inline-flex size-3 rounded-full bg-pink-500"></span>
             </span>
           ) : (
-            <span className="text-sm font-semibold leading-6 text-white">
-              Sign in
-            </span>
+            'Sign in'
           )}
-        </button>
+          {/* text-sm font-semibold leading-6 text-white */}
+        </Button>
       </div>
     </form>
   );

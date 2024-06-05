@@ -2,10 +2,10 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { z } from 'zod';
 
-import Signin from 'containers/Authentication/Signin';
+import Signup from 'containers/Authentication/Signup';
 import ROUTES from 'constants/paths';
 
-export const Route = createFileRoute(ROUTES.LOGIN)({
+export const Route = createFileRoute(ROUTES.SIGNUP)({
   validateSearch: z.object({
     redirect: z.string().optional().catch(''),
   }),
@@ -14,5 +14,5 @@ export const Route = createFileRoute(ROUTES.LOGIN)({
       throw redirect({ to: search.redirect });
     }
   },
-  component: Signin,
+  component: Signup,
 });

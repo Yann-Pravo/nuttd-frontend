@@ -6,6 +6,8 @@ import discordLogo from '../../../assets/images/logos/discord.svg';
 import Local from './Local';
 import useLoginThirdParty from 'api/auth/loginDiscord';
 import { Button } from '@/components/ui/button';
+import { Link } from '@tanstack/react-router';
+import ROUTES from 'constants/paths';
 
 const Signin = () => {
   const { refetch: loginDiscord } = useLoginThirdParty();
@@ -72,12 +74,15 @@ const Signin = () => {
 
           <p className="text-center text-sm leading-6 text-gray-500">
             Not a nutter?
-            <a
+            <Button variant="link">
+              <Link to={ROUTES.SIGNUP}>Sign up</Link>
+            </Button>
+            {/* <a
               href="#"
               className="ml-1 font-semibold text-pink-600 hover:text-pink-500"
             >
               Sign up
-            </a>
+            </a> */}
           </p>
         </div>
       </div>

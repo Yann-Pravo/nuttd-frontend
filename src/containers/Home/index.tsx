@@ -1,7 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import useLogout from 'api/auth/logout';
+import { useRouter } from '@tanstack/react-router';
 import logo from 'assets/logo.svg';
+import ROUTES from 'constants/paths';
+import { useAuth } from 'contexts/auth';
+import { useEffect } from 'react';
+import { Route } from 'routes/_auth.index';
 
 const randoms = [
   [1, 2],
@@ -10,7 +14,23 @@ const randoms = [
 ];
 
 function Home() {
-  const { refetch: logout } = useLogout();
+  const router = useRouter();
+  const navigate = Route.useNavigate();
+
+  const { user, logout, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    const redirect = async () => {
+      await router.invalidate();
+      await navigate({ to: ROUTES.LOGIN });
+    };
+
+    if (!isAuthenticated) {
+      redirect();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
+
   return (
     <div className="relative overflow-hidden bg-white">
       <div className="h-screen sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
@@ -24,7 +44,7 @@ function Home() {
             </div>
             <Button onClick={() => logout()}>Logout</Button>
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Welcome!
+              Welcome {user?.username}!
             </h1>
             <p className="mt-4 text-xl text-gray-500">
               This is a boilerplate build with Vite, React 18, TypeScript,

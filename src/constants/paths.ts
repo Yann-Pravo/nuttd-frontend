@@ -1,13 +1,13 @@
 enum ROUTES {
   HOME = '/',
   LOGIN = '/login',
-  REGISTER = '/register',
+  SIGNUP = '/signup',
   RESET_PASSWORD = '/reset-password',
 }
 
 export const PUBLIC_ROUTES = [
   ROUTES.LOGIN,
-  ROUTES.REGISTER,
+  ROUTES.SIGNUP,
   ROUTES.RESET_PASSWORD,
 ];
 

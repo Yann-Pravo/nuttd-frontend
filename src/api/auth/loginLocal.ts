@@ -1,18 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import client from '..';
 import { setTokens } from 'utils';
 
-interface LoginProps {
+export interface LoginProps {
   email: string;
   password: string;
   rememberMe: boolean;
 }
 
-const loginLocal = async ({ email, password }: LoginProps) => {
+const loginLocal = async ({ email, password, rememberMe }: LoginProps) => {
   const { data } = await client.post('/auth/login', {
     email,
     password,
+    rememberMe,
   });
 
   await setTokens(data);
@@ -20,13 +21,11 @@ const loginLocal = async ({ email, password }: LoginProps) => {
   return data;
 };
 
-const useLoginLocal = (key: string, body: LoginProps, props = {}) =>
-  useQuery({
-    queryKey: [key, body],
-    queryFn: () => loginLocal(body),
-    enabled: false,
+const useLoginLocal = (key = 'loginLocal', props = {}) =>
+  useMutation({
+    mutationKey: [key],
+    mutationFn: (body: LoginProps) => loginLocal(body),
     retry: false,
-    refetchOnWindowFocus: false,
     ...props,
   });
 
