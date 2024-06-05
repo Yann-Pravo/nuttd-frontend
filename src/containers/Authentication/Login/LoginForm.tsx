@@ -9,8 +9,9 @@ import { Link, useRouter } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { InputPassword } from '@/components/ui/input-password';
 
-const Local = () => {
+const Form = () => {
   const router = useRouter();
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
@@ -96,12 +97,11 @@ const Local = () => {
                 </div>
               </div>
 
-              <Input
+              <InputPassword
                 id={field.name}
                 name={field.name}
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
-                type="password"
               />
             </>
           )}
@@ -146,4 +146,4 @@ const Local = () => {
   );
 };
 
-export default Local;
+export default Form;

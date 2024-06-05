@@ -2,7 +2,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { z } from 'zod';
 
-import Signin from 'containers/Authentication/Signin';
+import Login from 'containers/Authentication/Login';
 import ROUTES from 'constants/paths';
 
 export const Route = createFileRoute(ROUTES.LOGIN)({
@@ -14,5 +14,5 @@ export const Route = createFileRoute(ROUTES.LOGIN)({
       throw redirect({ to: search.redirect });
     }
   },
-  component: Signin,
+  component: Login,
 });

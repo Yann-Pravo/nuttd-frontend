@@ -1,21 +1,32 @@
 import React from 'react';
 
-import nutLogo from '../../../assets/images/nut_64.png';
 import googleLogo from '../../../assets/images/logos/google.svg';
 import discordLogo from '../../../assets/images/logos/discord.svg';
+import nutLogo from '../../../assets/images/nut_64.png';
 import useLoginThirdParty from 'api/auth/loginDiscord';
 import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import ROUTES from 'constants/paths';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import SignupForm from './SignupForm';
 
 const Signup: React.FC = () => {
   const { refetch: loginDiscord } = useLoginThirdParty();
   return (
     <div className="flex min-h-full flex-1 items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-sm space-y-10">
+        <div className="flex items-center justify-center">
+          <img className="mr-2 size-8" src={nutLogo} alt="Nuttd logo" />
+          <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-pink-600">
+            Nuttd
+          </h2>
+        </div>
         <Card>
+          <CardHeader>
+            <CardTitle>Create an account</CardTitle>
+          </CardHeader>
           <CardContent>
+            <SignupForm />
             <div>
               <div className="relative mt-10">
                 <div

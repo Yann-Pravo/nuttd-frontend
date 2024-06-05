@@ -3,14 +3,14 @@ import React from 'react';
 import nutLogo from '../../../assets/images/nut_64.png';
 import googleLogo from '../../../assets/images/logos/google.svg';
 import discordLogo from '../../../assets/images/logos/discord.svg';
-import Local from './Local';
+import LoginForm from './LoginForm';
 import useLoginThirdParty from 'api/auth/loginDiscord';
 import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import ROUTES from 'constants/paths';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const Signin: React.FC = () => {
+const Login: React.FC = () => {
   const { refetch: loginDiscord } = useLoginThirdParty();
   return (
     <div className="flex min-h-full flex-1 items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -22,8 +22,11 @@ const Signin: React.FC = () => {
           </h2>
         </div>
         <Card>
+          <CardHeader>
+            <CardTitle>Sign in to your account</CardTitle>
+          </CardHeader>
           <CardContent>
-            <Local />
+            <LoginForm />
 
             <div>
               <div className="relative mt-10">
@@ -74,4 +77,4 @@ const Signin: React.FC = () => {
   );
 };
 
-export default Signin;
+export default Login;
