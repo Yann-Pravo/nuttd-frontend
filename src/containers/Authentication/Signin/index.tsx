@@ -4,8 +4,11 @@ import nutLogo from '../../../assets/images/nut_64.png';
 import googleLogo from '../../../assets/images/logos/google.svg';
 import discordLogo from '../../../assets/images/logos/discord.svg';
 import Local from './Local';
+import useLoginThirdParty from 'api/auth/loginDiscord';
+import { Button } from '@/components/ui/button';
 
 const Signin = () => {
+  const { refetch: loginDiscord } = useLoginThirdParty();
   return (
     <>
       <div className="flex min-h-full flex-1 items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -53,19 +56,16 @@ const Signin = () => {
                   </span>
                 </a>
 
-                <a
-                  href="#"
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
-                >
+                <Button variant="outline" onClick={() => loginDiscord()}>
                   <img
-                    className="h-6 w-auto"
+                    className="mr-2 h-6 w-auto"
                     src={discordLogo}
                     alt="Discord logo"
                   />
                   <span className="text-sm font-semibold leading-6">
                     Discord
                   </span>
-                </a>
+                </Button>
               </div>
             </div>
           </div>

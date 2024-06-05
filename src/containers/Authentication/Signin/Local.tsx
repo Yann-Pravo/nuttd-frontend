@@ -4,9 +4,10 @@ import { zodValidator } from '@tanstack/zod-form-adapter';
 import useLoginLocal from 'api/auth/loginLocal';
 import { z } from 'zod';
 import { useEffect } from 'react';
+import useGetStatus from 'api/auth/getStatus';
+import { queryClient } from 'api';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from 'routes/paths';
-import useGetStatus from 'api/auth/getStatus';
 
 const Local = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const Local = () => {
     isError,
     isSuccess,
     isFetching,
+    data,
     refetch: login,
   } = useLoginLocal('login', {
     email: form.state.values.email,
@@ -31,14 +33,11 @@ const Local = () => {
     rememberMe: form.state.values.rememberMe,
   });
 
-  // const {
-  //   isFetching: isFetchingStatus,
-  //   refetch: refetchStatus,
-  //   isSuccess: isStatusOk,
-  //   isError: isErrorStatus,
-  // } = useGetStatus('getdStatus', { enabled: false, retry: false });
+  // console.log({ data });
 
-  // console.log({ isErrorStatus });
+  // useGetStatus('getStatusa', {
+  //   enabled: Boolean(data?.accessToken),
+  // });
 
   useEffect(() => {
     if (isError) {
@@ -48,18 +47,25 @@ const Local = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success('You are logged in!');
-      // refetchStatus();
+      console.log({ isSuccess });
+      queryClient.invalidateQueries({
+        queryKey: ['getStatus'],
+        exact: true,
+      });
+
+      navigate(ROUTES.HOME);
+
+      toast.error('You are logged in!');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
 
   // useEffect(() => {
-  //   if (isStatusOk) {
-  //     navigate(ROUTES.HOME);
+  //   if (!isFetching && isSuccess && data && !data.isConnected) {
+  //     toast.success('You are logged in!');
+  //     getStatus();
   //   }
-  // }),
-  //   [isStatusOk];
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isSuccess, isFetching]);
 
   return (
     <form

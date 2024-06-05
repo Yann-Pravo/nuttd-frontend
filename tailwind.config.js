@@ -17,7 +17,6 @@ module.exports = {
       },
     },
     extend: {
-      npurple: '#d33577',
       keyframes: {
         'accordion-down': {
           from: { height: '0' },

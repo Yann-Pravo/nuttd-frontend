@@ -9,7 +9,7 @@
   "arrowParens": "always",
   "jsxBracketSameLine": false,
   "endOfLine": "lf",
-  "tailwindConfig": "./tailwind.config.mjs",
+  "tailwindConfig": "./tailwind.config.js",
   "overrides": [
     {
       "files": ".prettierrc",

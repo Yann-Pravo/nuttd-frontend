@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import client from '..';
+import { setTokens } from 'utils';
 
 interface LoginProps {
   email: string;
@@ -9,13 +10,12 @@ interface LoginProps {
 }
 
 const loginLocal = async ({ email, password }: LoginProps) => {
-  const { data } = await client.post(
-    `${import.meta.env.VITE_HOST_API}/api/auth/login`,
-    {
-      email,
-      password,
-    }
-  );
+  const { data } = await client.post('/auth/login', {
+    email,
+    password,
+  });
+
+  await setTokens(data);
 
   return data;
 };

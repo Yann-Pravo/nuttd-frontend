@@ -2,10 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 
 import client from '..';
 
-const getStatus = async () => {
-  const { data } = await client.get(
-    `${import.meta.env.VITE_HOST_API}/api/auth/status`
-  );
+interface StatusProps {
+  isConnected: boolean;
+}
+
+const getStatus = async (): Promise<StatusProps> => {
+  const { data } = await client.get('/auth/status');
 
   return data;
 };
@@ -15,6 +17,7 @@ const useGetStatus = (key = 'getStatus', props = {}) =>
     queryKey: [key],
     queryFn: getStatus,
     retry: false,
+    refetchOnWindowFocus: false,
     ...props,
   });
 
