@@ -5,8 +5,10 @@ import { useEffect } from 'react';
 import ROUTES from 'constants/paths';
 import { useAuth } from 'contexts/auth';
 import { Route } from 'routes/login';
-import { useRouter } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const Local = () => {
   const router = useRouter();
@@ -16,8 +18,8 @@ const Local = () => {
   const { login, isLoading, isAuthenticated } = useAuth();
   const form = useForm({
     defaultValues: {
-      email: 'test@nuttdd.io',
-      password: 'passwordtest',
+      email: '',
+      password: '',
       rememberMe: false,
     },
     validatorAdapter: zodValidator,
@@ -59,23 +61,17 @@ const Local = () => {
           {(field) => (
             <>
               <div className="flex items-center justify-between">
-                <label
-                  htmlFor={field.name}
-                  className="block text-sm leading-6 text-gray-900"
-                >
-                  Email address
-                </label>
+                <Label htmlFor={field.name}>Email address</Label>
                 <div className="text-xs text-red-600">
                   {field.state.meta.errors[0]?.toString().split(',')[0]}
                 </div>
               </div>
-              <input
+              <Input
                 id={field.name}
                 name={field.name}
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
                 autoComplete="email"
-                className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               />
             </>
           )}
@@ -94,24 +90,18 @@ const Local = () => {
           {(field) => (
             <>
               <div className="flex items-center justify-between">
-                <label
-                  htmlFor={field.name}
-                  className="block text-sm leading-6 text-gray-900"
-                >
-                  Password
-                </label>
+                <Label htmlFor={field.name}>Password</Label>
                 <div className="text-xs text-red-600">
                   {field.state.meta.errors[0]?.toString().split(',')[0]}
                 </div>
               </div>
 
-              <input
+              <Input
                 id={field.name}
                 name={field.name}
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
                 type="password"
-                className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               />
             </>
           )}
@@ -121,42 +111,27 @@ const Local = () => {
       <div className="flex items-center justify-between">
         <form.Field name="rememberMe">
           {(field) => (
-            <div className="flex items-center">
+            <div className="flex items-center space-x-2">
               <input
+                type="checkbox"
                 id={field.name}
                 name={field.name}
                 checked={field.state.value}
                 onChange={(e) => field.handleChange(e.target.checked)}
-                type="checkbox"
                 className="size-4 rounded border-gray-300 text-pink-600 focus:ring-pink-600"
               />
-              <label
-                htmlFor={field.name}
-                className="ml-3 block text-sm leading-6 text-gray-900"
-              >
-                Remember me
-              </label>
+              <Label htmlFor={field.name}>Remember me</Label>
             </div>
           )}
         </form.Field>
 
-        <div className="text-sm leading-6">
-          <a
-            href="#"
-            className="font-semibold text-pink-600 hover:text-pink-500"
-          >
-            Forgot password?
-          </a>
-        </div>
+        <Button variant="link">
+          <Link to={ROUTES.LOGIN}>Forgot password?</Link>
+        </Button>
       </div>
 
       <div>
-        <Button
-          disabled={isLoading}
-          type="submit"
-          width="full"
-          // className="flex w-full justify-center rounded-md bg-pink-600 px-3 py-1.5 hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
-        >
+        <Button disabled={isLoading} type="submit" width="full">
           {isLoading ? (
             <span className="relative flex size-6 items-center justify-center">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-pink-400 opacity-75"></span>
@@ -165,7 +140,6 @@ const Local = () => {
           ) : (
             'Sign in'
           )}
-          {/* text-sm font-semibold leading-6 text-white */}
         </Button>
       </div>
     </form>

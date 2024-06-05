@@ -8,24 +8,21 @@ import useLoginThirdParty from 'api/auth/loginDiscord';
 import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import ROUTES from 'constants/paths';
+import { Card, CardContent } from '@/components/ui/card';
 
-const Signin = () => {
+const Signin: React.FC = () => {
   const { refetch: loginDiscord } = useLoginThirdParty();
   return (
-    <>
-      <div className="flex min-h-full flex-1 items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-        <div className="w-full max-w-sm space-y-10">
-          <div>
-            <img
-              className="mx-auto h-16 w-auto"
-              src={nutLogo}
-              alt="Nuttd logo"
-            />
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Let‘s crack some nuts
-            </h2>
-          </div>
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+    <div className="flex min-h-full flex-1 items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-sm space-y-8">
+        <div className="flex items-center justify-center">
+          <img className="mr-2 size-8" src={nutLogo} alt="Nuttd logo" />
+          <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-pink-600">
+            Nuttd
+          </h2>
+        </div>
+        <Card>
+          <CardContent>
             <Local />
 
             <div>
@@ -44,19 +41,14 @@ const Signin = () => {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <a
-                  href="#"
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
-                >
+                <Button variant="outline" onClick={() => loginDiscord()}>
                   <img
-                    className="h-6 w-auto"
+                    className="mr-2 h-6 w-auto"
                     src={googleLogo}
                     alt="Google logo"
                   />
-                  <span className="text-sm font-semibold leading-6">
-                    Google
-                  </span>
-                </a>
+                  Google
+                </Button>
 
                 <Button variant="outline" onClick={() => loginDiscord()}>
                   <img
@@ -64,29 +56,21 @@ const Signin = () => {
                     src={discordLogo}
                     alt="Discord logo"
                   />
-                  <span className="text-sm font-semibold leading-6">
-                    Discord
-                  </span>
+                  Discord
                 </Button>
               </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
 
-          <p className="text-center text-sm leading-6 text-gray-500">
-            Not a nutter?
-            <Button variant="link">
-              <Link to={ROUTES.SIGNUP}>Sign up</Link>
-            </Button>
-            {/* <a
-              href="#"
-              className="ml-1 font-semibold text-pink-600 hover:text-pink-500"
-            >
-              Sign up
-            </a> */}
-          </p>
-        </div>
+        <p className="text-center text-sm leading-6 text-gray-500">
+          Not a nutter?
+          <Button variant="link">
+            <Link to={ROUTES.SIGNUP}>Sign up</Link>
+          </Button>
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 
