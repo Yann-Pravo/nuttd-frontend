@@ -14,7 +14,7 @@ const Signup: React.FC = () => {
   const { refetch: loginDiscord } = useLoginThirdParty();
   return (
     <div className="flex min-h-full flex-1 items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-sm space-y-10">
+      <div className="w-full max-w-sm space-y-8">
         <div className="flex items-center justify-center">
           <img className="mr-2 size-8" src={nutLogo} alt="Nuttd logo" />
           <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-pink-600">
