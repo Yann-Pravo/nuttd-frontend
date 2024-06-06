@@ -26,9 +26,9 @@ const SignupForm = () => {
 
   const form = useForm({
     defaultValues: {
-      email: '',
-      username: '',
-      password: '',
+      email: 'test@nuttd.io',
+      username: 'test',
+      password: 'passwordtest',
     },
     validatorAdapter: zodValidator,
     onSubmit: ({ value }) =>
