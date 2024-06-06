@@ -1,7 +1,3 @@
-export function classNames(...classes: unknown[]): string {
-  return classes.filter(Boolean).join(' ');
-}
-
 export const getRefreshToken = () => localStorage.getItem('refreshToken');
 
 export const setTokens = ({

@@ -1,18 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import client from '..';
-
-export interface User {
-  id: string;
-  username: string;
-  email: string;
-  displayName: string;
-  birthday: string;
-  followers: User[];
-  following: User[];
-  guilds: string[];
-  nuts: string[];
-}
+import { User } from 'constants/models';
 
 const getUser = async (): Promise<User> => {
   const { data } = await client.get('/users/me');

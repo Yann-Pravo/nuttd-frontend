@@ -3,6 +3,7 @@ import 'tailwindcss/tailwind.css';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { queryClient } from 'api';
+import 'react-day-picker/dist/style.css';
 // import { RouterProvider, createRouter } from '@tanstack/react-router';
 
 // // Import the generated route tree

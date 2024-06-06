@@ -4,14 +4,12 @@ import client from '..';
 
 export interface SignupProps {
   email: string;
-  username: string;
   password: string;
 }
 
-const signup = async ({ email, username, password }: SignupProps) => {
+const signup = async ({ email, password }: SignupProps) => {
   const { data } = await client.post('/auth/signup', {
     email,
-    username,
     password,
   });
 

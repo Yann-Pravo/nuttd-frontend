@@ -1,7 +1,7 @@
 import { toast } from 'sonner';
 import useLoginLocal, { LoginProps } from 'api/auth/loginLocal';
 import useLogout from 'api/auth/logout';
-import useGetUser, { User } from 'api/user/getUser';
+import useGetUser from 'api/user/getUser';
 import React, {
   useEffect,
   createContext,
@@ -9,8 +9,7 @@ import React, {
   useContext,
   PropsWithChildren,
 } from 'react';
-
-// import { sleep } from './utils'
+import { User } from 'constants/models';
 
 export interface AuthContext {
   isAuthenticated: boolean;

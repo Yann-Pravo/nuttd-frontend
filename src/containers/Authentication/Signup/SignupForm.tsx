@@ -26,9 +26,8 @@ const SignupForm = () => {
 
   const form = useForm({
     defaultValues: {
-      email: 'test@nuttd.io',
-      username: 'test',
-      password: 'passwordtest',
+      email: '',
+      password: '',
     },
     validatorAdapter: zodValidator,
     onSubmit: ({ value }) =>
@@ -83,35 +82,6 @@ const SignupForm = () => {
             <>
               <div className="flex items-center justify-between">
                 <Label htmlFor={field.name}>Email address</Label>
-                <div className="text-xs text-red-600">
-                  {field.state.meta.errors[0]?.toString().split(',')[0]}
-                </div>
-              </div>
-              <Input
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                autoComplete="email"
-              />
-            </>
-          )}
-        </form.Field>
-      </div>
-      <div>
-        <form.Field
-          name="username"
-          validators={{
-            onChangeAsyncDebounceMs: 1500,
-            onChangeAsync: z
-              .string()
-              .min(3, { message: 'Minimum 3 characters' }),
-          }}
-        >
-          {(field) => (
-            <>
-              <div className="flex items-center justify-between">
-                <Label htmlFor={field.name}>Username</Label>
                 <div className="text-xs text-red-600">
                   {field.state.meta.errors[0]?.toString().split(',')[0]}
                 </div>
