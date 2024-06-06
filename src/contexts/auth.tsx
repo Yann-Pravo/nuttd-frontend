@@ -16,6 +16,7 @@ export interface AuthContext {
   login: (props: LoginProps) => Promise<void>;
   logout: () => Promise<void>;
   user: User | undefined;
+  reloadUser: () => void;
   isLoading: boolean;
 }
 
@@ -30,7 +31,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   children,
 }) => {
   const [user, setUser] = React.useState<User | undefined>(initialUser);
-  // const { data: status, isFetching: isStatusLoading } = useGetStatus();
   const { mutate: loginMutation, isPending: isLoginLocalLoading } =
     useLoginLocal();
   const { mutate: logoutMutation } = useLogout();
@@ -58,10 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       await loginMutation(
         { email, password, rememberMe },
         {
-          onSuccess: () => {
-            getUser();
-            toast.success('You are logged in!');
-          },
+          onSuccess: () => getUser(),
           onError: () => toast.error('Wrong credentials'),
         },
       );
@@ -75,6 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       value={{
         isAuthenticated,
         user,
+        reloadUser: getUser,
         login,
         logout,
         isLoading: isLoginLocalLoading || isUserLoading,

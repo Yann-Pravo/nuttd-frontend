@@ -26,9 +26,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import useCreateProfile from 'api/profile/createProfile';
+import { useAuth } from 'contexts/auth';
+import { toast } from 'sonner';
 
 const schema = z.object({
-  name: z.string().min(1, { message: 'Name has to be filled' }),
+  displayName: z.string().min(1, { message: 'Name has to be filled' }),
   birthday: z.date({
     message: 'A date of birth is required.',
   }),
@@ -36,13 +39,21 @@ const schema = z.object({
 });
 
 type FormData = {
-  name?: string;
-  birthday?: Date;
-  gender?: string;
+  displayName: string;
+  birthday: Date;
+  gender: Gender;
 };
 
-const CreateProfileForm = () => {
-  const isLoading = false;
+interface CreateProfileFormProps {
+  onCallback: () => void;
+}
+
+const CreateProfileForm: React.FC<CreateProfileFormProps> = ({
+  onCallback,
+}) => {
+  const { reloadUser } = useAuth();
+  const { mutate: createProfile, isPending } = useCreateProfile();
+  const isLoading = isPending;
 
   const {
     register,
@@ -51,27 +62,29 @@ const CreateProfileForm = () => {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    // defaultValues: {
-    //   name: '',
-    //   birthday: null,
-    //   gender: null,
-    // },
   });
 
   const onSubmit = (data: FormData) => {
-    console.log({ data });
+    console.log(data);
+    createProfile(data, {
+      onSuccess: async () => {
+        reloadUser();
+        onCallback();
+        toast.success('Welcome, you are a nutter!');
+      },
+    });
   };
-
-  // console.log({ errors });
 
   return (
     <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div>
         <div className="flex items-center justify-between">
           <Label>Name</Label>
-          <div className="text-xs text-red-600">{errors.name?.message}</div>
+          <div className="text-xs text-red-600">
+            {errors.displayName?.message}
+          </div>
         </div>
-        <Input {...register('name')} />
+        <Input {...register('displayName')} />
       </div>
       <div>
         <div className="flex items-center justify-between">
@@ -163,26 +176,20 @@ const CreateProfileForm = () => {
         <Controller
           name="gender"
           control={control}
-          render={({ field }) => {
-            console.log(
-              { field },
-              field.value && genders[field.value as Gender],
-            );
-            return (
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger>
-                  <div>{field.value && genders[field.value as Gender]}</div>
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.keys(genders).map((genderId) => (
-                    <SelectItem value={genderId} key={genderId}>
-                      {genders[genderId as Gender]}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            );
-          }}
+          render={({ field }) => (
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <SelectTrigger>
+                <div>{field.value && genders[field.value as Gender]}</div>
+              </SelectTrigger>
+              <SelectContent>
+                {Object.keys(genders).map((genderId) => (
+                  <SelectItem value={genderId} key={genderId}>
+                    {genders[genderId as Gender]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         />
       </div>
 

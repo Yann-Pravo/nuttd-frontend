@@ -19,8 +19,8 @@ const Form = () => {
   const { login, isLoading, isAuthenticated } = useAuth();
   const form = useForm({
     defaultValues: {
-      email: 'test2@nuttd.io',
-      password: 'passwordtest',
+      email: '',
+      password: '',
       rememberMe: false,
     },
     validatorAdapter: zodValidator,
