@@ -65,7 +65,6 @@ const CreateProfileForm: React.FC<CreateProfileFormProps> = ({
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
     createProfile(data, {
       onSuccess: async () => {
         reloadUser();

@@ -10,12 +10,14 @@ import React, {
   PropsWithChildren,
 } from 'react';
 import { User } from 'constants/models';
+import useGetLocation, { LocationIP } from 'api/auth/getLocation';
 
 export interface AuthContext {
   isAuthenticated: boolean;
   login: (props: LoginProps) => Promise<void>;
   logout: () => Promise<void>;
   user: User | undefined;
+  location: LocationIP | undefined;
   reloadUser: () => void;
   isLoading: boolean;
 }
@@ -39,14 +41,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     isFetching: isUserLoading,
     data: userData,
   } = useGetUser();
+  const {
+    data: location,
+    isFetched: isFetchedLocation,
+    refetch: getLocation,
+  } = useGetLocation();
+
+  const isAuthenticated = !!user;
+
+  useEffect(() => {
+    if (!isFetchedLocation && isAuthenticated) {
+      getLocation();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetchedLocation, isAuthenticated]);
 
   useEffect(() => {
     if (userData) {
       setUser(userData);
     }
   }, [userData]);
-
-  const isAuthenticated = !!user;
 
   const logout = useCallback(async () => {
     await logoutMutation({}, { onSuccess: () => setUser(undefined) });
@@ -72,6 +86,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       value={{
         isAuthenticated,
         user,
+        location,
         reloadUser: getUser,
         login,
         logout,

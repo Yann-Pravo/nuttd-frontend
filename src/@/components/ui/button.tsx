@@ -17,7 +17,9 @@ const buttonVariants = cva(
         secondary:
           'bg-slate-100 text-slate-900 shadow-sm hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80',
         ghost:
-          'hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50',
+          'text-pink-600 hover:bg-pink-600 hover:text-white dark:hover:bg-slate-800 dark:hover:text-slate-50',
+        'ghost-secondary':
+          'bg-pink-600 text-white hover:bg-white hover:text-pink-600 dark:hover:bg-slate-800 dark:hover:text-slate-50',
         link: 'font-semibold text-pink-600 hover:text-pink-400',
       },
       size: {
@@ -25,6 +27,7 @@ const buttonVariants = cva(
         sm: 'h-8 rounded-md px-3 text-xs',
         lg: 'h-10 rounded-md px-8',
         icon: 'size-9',
+        'icon-secondary': 'size-12 rounded-full p-2',
       },
       width: {
         default: '',
