@@ -4,15 +4,20 @@ import client from '..';
 
 export interface LocationIP {
   city: string;
-  country: string;
-  countryCode: string;
-  region: string;
-  regionName: string;
-  zip: string;
+  country_name: string;
+  country_flag: string;
+  country_code3: string;
+  state_code: string;
+  state_prov: string;
+  zipcode: string;
 }
 
 const getLocation = async (): Promise<LocationIP> => {
-  const { data } = await client.get('http://ip-api.com/json');
+  const { data } = await client.get(
+    `https://api.ipgeolocation.io/ipgeo?apiKey=${
+      import.meta.env.VITE_IPGEOLOCATION_KEY
+    }&fields=city,country_name,country_flag,country_code3,state_code,state_prov,zipcode`,
+  );
 
   return data;
 };

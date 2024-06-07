@@ -14,11 +14,12 @@ const createNut = async ({ date, location }: CreateNutProps) => {
     ...(location && {
       location: {
         city: location.city,
-        country: location.country,
-        countryCode: location.countryCode,
-        region: location.region,
-        regionName: location.regionName,
-        zip: location.zip,
+        country: location.country_name,
+        countryCode: location.country_code3,
+        countryFlag: location.country_flag,
+        region: location.state_code,
+        regionName: location.state_prov,
+        zip: location.zipcode,
       },
     }),
   });
