@@ -75,7 +75,7 @@ const CreateNutForm: React.FC<CreateNutFormProps> = ({ onCallback }) => {
         onSuccess: async () => {
           reloadUser();
           onCallback();
-          toast.success('Dully nuttd!');
+          toast.success('Duly nuttd!');
         },
       },
     );
