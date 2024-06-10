@@ -6,11 +6,9 @@ import useGetNutsRank from 'api/nut/getNutsRank';
 import { useAuth } from 'contexts/auth';
 
 function Home() {
-  const { user, location } = useAuth();
+  const { user } = useAuth();
   const { data: nutsCount, isFetching: isLoadingCount } = useGetNutsCount();
-  const { data: nutsRank, isFetching: isLoadingRank } = useGetNutsRank({
-    location,
-  });
+  const { data: nutsRank, isFetching: isLoadingRank } = useGetNutsRank();
 
   return (
     <div className="py-10">
@@ -44,7 +42,9 @@ function Home() {
                         )}
                       </div>
                       <div className="text-center">
-                        <div className="mb-1 truncate">{location?.city}</div>
+                        <div className="mb-1 truncate">
+                          {user?.location?.city}
+                        </div>
                         <div className="flex items-center justify-center">
                           <span>#</span>
                           {isLoadingRank ? (
@@ -57,7 +57,9 @@ function Home() {
                         </div>
                       </div>
                       <div className="text-center">
-                        <div className="mb-1 truncate">{location?.country}</div>
+                        <div className="mb-1 truncate">
+                          {user?.location?.country}
+                        </div>
                         <div className="flex items-center justify-center">
                           <span>#</span>
                           {isLoadingRank ? (
@@ -88,7 +90,7 @@ function Home() {
                         )}
                       </div>
                       <div className="grow text-center">
-                        <div className="truncate">{location?.city}</div>
+                        <div className="truncate">{user?.location?.city}</div>
                         <div className="mt-1 flex items-center justify-center">
                           <span>#</span>
                           {isLoadingRank ? (
@@ -101,7 +103,9 @@ function Home() {
                         </div>
                       </div>
                       <div className="grow text-center">
-                        <div className="truncate">{location?.country}</div>
+                        <div className="truncate">
+                          {user?.location?.country}
+                        </div>
                         <div className="mt-1 flex items-center justify-center">
                           <span>#</span>
                           {isLoadingRank ? (

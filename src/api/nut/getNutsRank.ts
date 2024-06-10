@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
 import client from '..';
-import { LocationNuttd } from 'api/auth/getLocation';
 
 interface GetNutsRankProps {
   monthRankCity: number;
@@ -10,27 +9,18 @@ interface GetNutsRankProps {
   yearRankCountry: number;
 }
 
-interface GetNutsRankParams {
-  location?: Pick<LocationNuttd, 'city' | 'country'>;
-}
-
-const getNutsRank = async (
-  body: GetNutsRankParams,
-): Promise<GetNutsRankProps> => {
-  const { data } = await client.post('/nuts/mynutsrank', {
-    ...body,
-  });
+const getNutsRank = async (): Promise<GetNutsRankProps> => {
+  const { data } = await client.post('/nuts/mynutsrank');
 
   return data;
 };
 
-const useGetNutsRank = (body: GetNutsRankParams, props = {}) =>
+const useGetNutsRank = (key = 'getNutsRank', props = {}) =>
   useQuery({
-    queryKey: ['getNutsRank', body],
-    queryFn: () => getNutsRank(body),
+    queryKey: [key],
+    queryFn: getNutsRank,
     retry: false,
     refetchOnWindowFocus: false,
-    enabled: Boolean(body.location),
     ...props,
   });
 

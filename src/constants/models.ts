@@ -1,3 +1,13 @@
+interface LocationNuttd {
+  city: string;
+  country: string;
+  countryCode: string;
+  countryFlag: string;
+  region: string;
+  regionName: string;
+  zip: string;
+}
+
 export interface User {
   id: string;
   username: string;
@@ -7,6 +17,7 @@ export interface User {
   following: User[];
   guilds: string[];
   nuts: string[];
+  location: LocationNuttd;
 }
 
 export enum Gender {

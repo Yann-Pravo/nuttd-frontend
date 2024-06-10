@@ -21,6 +21,8 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@/components/ui/select';
+import useGetNutsCount from 'api/nut/getNutsCount';
+import useGetNutsRank from 'api/nut/getNutsRank';
 
 const schema = z.object({
   date: z.date({
@@ -45,7 +47,11 @@ interface CreateNutFormProps {
 }
 
 const CreateNutForm: React.FC<CreateNutFormProps> = ({ onCallback }) => {
-  const { reloadUser, location } = useAuth();
+  const { reloadUser } = useAuth();
+  const { refetch: getNutsCount } = useGetNutsCount();
+  const { refetch: getNutsRank } = useGetNutsRank('getNutsRank', {
+    enabled: false,
+  });
   const { mutate: createNut, isPending } = useCreateNut();
   const isLoading = isPending;
 
@@ -67,13 +73,12 @@ const CreateNutForm: React.FC<CreateNutFormProps> = ({ onCallback }) => {
       data.date.setHours(Number(data.hours), Number(data.minutes)),
     );
     createNut(
-      {
-        date: nutDate,
-        location: location,
-      },
+      { date: nutDate },
       {
         onSuccess: async () => {
           reloadUser();
+          getNutsCount();
+          location && getNutsRank();
           onCallback();
           toast.success('Duly nuttd!');
         },
