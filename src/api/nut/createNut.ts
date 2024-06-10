@@ -11,7 +11,7 @@ export interface CreateNutProps {
 const createNut = async ({ date, location }: CreateNutProps) => {
   const { data } = await client.post('/nuts', {
     date,
-    ...location,
+    ...(location && { location }),
   });
 
   return data;
