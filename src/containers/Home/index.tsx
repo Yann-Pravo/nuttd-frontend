@@ -36,7 +36,7 @@ function Home() {
                       <div className="flex flex-col items-center text-center">
                         <div className="mb-1">Nuts</div>
                         {isLoadingCount ? (
-                          <Skeleton className="size-8 rounded-sm" />
+                          <Skeleton className="size-9 rounded-sm" />
                         ) : (
                           <div className="text-3xl font-semibold tracking-tight text-gray-900">
                             {nutsCount?.currentMonthCount}
@@ -48,7 +48,7 @@ function Home() {
                         <div className="flex items-center justify-center">
                           <span>#</span>
                           {isLoadingRank ? (
-                            <Skeleton className="size-8 rounded-sm" />
+                            <Skeleton className="size-9 rounded-sm" />
                           ) : (
                             <span className="text-3xl font-semibold tracking-tight text-gray-900">
                               {nutsRank?.monthRankCity}
@@ -61,7 +61,7 @@ function Home() {
                         <div className="flex items-center justify-center">
                           <span>#</span>
                           {isLoadingRank ? (
-                            <Skeleton className="size-8 rounded-sm" />
+                            <Skeleton className="size-9 rounded-sm" />
                           ) : (
                             <span className="text-3xl font-semibold tracking-tight text-gray-900">
                               {nutsRank?.monthRankCountry}
@@ -80,7 +80,7 @@ function Home() {
                       <div className="flex flex-col items-center text-center">
                         <div className="mb-1">Nuts</div>
                         {isLoadingCount ? (
-                          <Skeleton className="size-8 rounded-sm" />
+                          <Skeleton className="size-9 rounded-sm" />
                         ) : (
                           <div className="text-3xl font-semibold tracking-tight text-gray-900">
                             {nutsCount?.currentYearCount}
@@ -92,7 +92,7 @@ function Home() {
                         <div className="mt-1 flex items-center justify-center">
                           <span>#</span>
                           {isLoadingRank ? (
-                            <Skeleton className="size-8 rounded-sm" />
+                            <Skeleton className="size-9 rounded-sm" />
                           ) : (
                             <span className="text-3xl font-semibold tracking-tight text-gray-900">
                               {nutsRank?.yearRankCity}
@@ -105,7 +105,7 @@ function Home() {
                         <div className="mt-1 flex items-center justify-center">
                           <span>#</span>
                           {isLoadingRank ? (
-                            <Skeleton className="size-8 rounded-sm" />
+                            <Skeleton className="size-9 rounded-sm" />
                           ) : (
                             <span className="text-3xl font-semibold tracking-tight text-gray-900">
                               {nutsRank?.yearRankCountry}
