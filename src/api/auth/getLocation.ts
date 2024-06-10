@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import client from '..';
+import { buildLocationNuttd } from './helpers';
 
 export interface LocationIP {
   city: string;
@@ -12,14 +13,24 @@ export interface LocationIP {
   zipcode: string;
 }
 
-const getLocation = async (): Promise<LocationIP> => {
-  const { data } = await client.get(
+export interface LocationNuttd {
+  city: string;
+  country: string;
+  countryCode: string;
+  countryFlag: string;
+  region: string;
+  regionName: string;
+  zip: string;
+}
+
+const getLocation = async (): Promise<LocationNuttd> => {
+  const { data } = await client.get<LocationIP>(
     `https://api.ipgeolocation.io/ipgeo?apiKey=${
       import.meta.env.VITE_IPGEOLOCATION_KEY
     }&fields=city,country_name,country_flag,country_code3,state_code,state_prov,zipcode`,
   );
 
-  return data;
+  return buildLocationNuttd(data);
 };
 
 const useGetLocation = (key = 'getLocation', props = {}) =>

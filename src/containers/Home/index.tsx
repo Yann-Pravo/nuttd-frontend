@@ -1,23 +1,130 @@
+import { Card, CardContent } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import useGetNutsCount from 'api/nut/getNutsCount';
+import useGetNutsRank from 'api/nut/getNutsRank';
 import { useAuth } from 'contexts/auth';
 
 function Home() {
-  const { user } = useAuth();
+  const { user, location } = useAuth();
+  const { data: nutsCount } = useGetNutsCount();
+  const { data: nutsRank } = useGetNutsRank({ location });
+
+  console.log({ location });
 
   return (
     <div className="py-10">
-      <header>
+      {/* <header>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
             Dashboard
           </h1>
         </div>
-      </header>
-      <main>
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          coucou {user?.profile?.displayName} sava?
-        </div>
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          nuts: {user?.nuts?.length}
+      </header> */}
+      <main className="pb-8">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+          <h1 className="sr-only">Stats</h1>
+          <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-4 lg:gap-8">
+            <div className="grid grid-cols-1 gap-4">
+              <Card>
+                <CardContent>
+                  <div>
+                    <div className="text-sm font-medium text-gray-500">
+                      This month
+                    </div>
+                    <div className="mt-2 grid grid-cols-3 space-x-4 text-sm">
+                      <div className="text-center">
+                        <div>Nuts</div>
+                        <div className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                          {nutsCount?.currentMonthCount}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="truncate">{location?.city}</div>
+                        <div className="mt-1">
+                          <span>#</span>
+                          <span className="text-3xl font-semibold tracking-tight text-gray-900">
+                            {nutsRank?.monthRankCity}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="truncate">{location?.country}</div>
+                        <div className="mt-1">
+                          <span>#</span>
+                          <span className="text-3xl font-semibold tracking-tight text-gray-900">
+                            {nutsRank?.monthRankCountry}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Separator className="my-4" />
+                  <div>
+                    <div className="text-sm font-medium text-gray-500">
+                      This year
+                    </div>
+                    <div className="mt-2 grid grid-cols-3 items-center space-x-4 text-sm">
+                      <div className="grow text-center">
+                        <div>Nuts</div>
+                        <div className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                          {nutsCount?.currentYearCount}
+                        </div>
+                      </div>
+                      <div className="grow text-center">
+                        <div className="truncate">{location?.city}</div>
+                        <div className="mt-1">
+                          <span>#</span>
+                          <span className="text-3xl font-semibold tracking-tight text-gray-900">
+                            {nutsRank?.yearRankCity}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="grow text-center">
+                        <div className="truncate">{location?.country}</div>
+                        <div className="mt-1">
+                          <span>#</span>
+                          <span className="text-3xl font-semibold tracking-tight text-gray-900">
+                            {nutsRank?.yearRankCountry}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Middle column */}
+            <div className="grid grid-cols-1 gap-4 lg:col-span-2">
+              <section aria-labelledby="section-1-title">
+                <h2 className="sr-only" id="section-1-title">
+                  Section title
+                </h2>
+                <div className="overflow-hidden rounded-lg bg-white shadow">
+                  <div className="p-6">
+                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                      coucou {user?.profile?.displayName} sava?
+                    </div>
+                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                      nuts: {user?.nuts?.length}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            {/* Right column */}
+            <div className="grid grid-cols-1 gap-4">
+              <section aria-labelledby="section-2-title">
+                <h2 className="sr-only" id="section-2-title">
+                  Section title
+                </h2>
+                <div className="overflow-hidden rounded-lg bg-white shadow">
+                  <div className="p-6">{/* Your content */}</div>
+                </div>
+              </section>
+            </div>
+          </div>
         </div>
       </main>
     </div>

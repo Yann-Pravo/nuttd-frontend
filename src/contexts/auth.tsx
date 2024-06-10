@@ -10,14 +10,14 @@ import React, {
   PropsWithChildren,
 } from 'react';
 import { User } from 'constants/models';
-import useGetLocation, { LocationIP } from 'api/auth/getLocation';
+import useGetLocation, { LocationNuttd } from 'api/auth/getLocation';
 
 export interface AuthContext {
   isAuthenticated: boolean;
   login: (props: LoginProps) => Promise<void>;
   logout: () => Promise<void>;
   user: User | undefined;
-  location: LocationIP | undefined;
+  location: LocationNuttd | undefined;
   reloadUser: () => void;
   isLoading: boolean;
 }
