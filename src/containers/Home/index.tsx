@@ -1,15 +1,16 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import useGetNutsCount from 'api/nut/getNutsCount';
 import useGetNutsRank from 'api/nut/getNutsRank';
 import { useAuth } from 'contexts/auth';
 
 function Home() {
   const { user, location } = useAuth();
-  const { data: nutsCount } = useGetNutsCount();
-  const { data: nutsRank } = useGetNutsRank({ location });
-
-  console.log({ location });
+  const { data: nutsCount, isFetching: isLoadingCount } = useGetNutsCount();
+  const { data: nutsRank, isFetching: isLoadingRank } = useGetNutsRank({
+    location,
+  });
 
   return (
     <div className="py-10">
@@ -32,28 +33,40 @@ function Home() {
                       This month
                     </div>
                     <div className="mt-2 grid grid-cols-3 space-x-4 text-sm">
+                      <div className="flex flex-col items-center text-center">
+                        <div className="mb-1">Nuts</div>
+                        {isLoadingCount ? (
+                          <Skeleton className="size-8 rounded-sm" />
+                        ) : (
+                          <div className="text-3xl font-semibold tracking-tight text-gray-900">
+                            {nutsCount?.currentMonthCount}
+                          </div>
+                        )}
+                      </div>
                       <div className="text-center">
-                        <div>Nuts</div>
-                        <div className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-                          {nutsCount?.currentMonthCount}
+                        <div className="mb-1 truncate">{location?.city}</div>
+                        <div className="flex items-center justify-center">
+                          <span>#</span>
+                          {isLoadingRank ? (
+                            <Skeleton className="size-8 rounded-sm" />
+                          ) : (
+                            <span className="text-3xl font-semibold tracking-tight text-gray-900">
+                              {nutsRank?.monthRankCity}
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className="text-center">
-                        <div className="truncate">{location?.city}</div>
-                        <div className="mt-1">
+                        <div className="mb-1 truncate">{location?.country}</div>
+                        <div className="flex items-center justify-center">
                           <span>#</span>
-                          <span className="text-3xl font-semibold tracking-tight text-gray-900">
-                            {nutsRank?.monthRankCity}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <div className="truncate">{location?.country}</div>
-                        <div className="mt-1">
-                          <span>#</span>
-                          <span className="text-3xl font-semibold tracking-tight text-gray-900">
-                            {nutsRank?.monthRankCountry}
-                          </span>
+                          {isLoadingRank ? (
+                            <Skeleton className="size-8 rounded-sm" />
+                          ) : (
+                            <span className="text-3xl font-semibold tracking-tight text-gray-900">
+                              {nutsRank?.monthRankCountry}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -64,28 +77,40 @@ function Home() {
                       This year
                     </div>
                     <div className="mt-2 grid grid-cols-3 items-center space-x-4 text-sm">
-                      <div className="grow text-center">
-                        <div>Nuts</div>
-                        <div className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-                          {nutsCount?.currentYearCount}
-                        </div>
+                      <div className="flex flex-col items-center text-center">
+                        <div className="mb-1">Nuts</div>
+                        {isLoadingCount ? (
+                          <Skeleton className="size-8 rounded-sm" />
+                        ) : (
+                          <div className="text-3xl font-semibold tracking-tight text-gray-900">
+                            {nutsCount?.currentYearCount}
+                          </div>
+                        )}
                       </div>
                       <div className="grow text-center">
                         <div className="truncate">{location?.city}</div>
-                        <div className="mt-1">
+                        <div className="mt-1 flex items-center justify-center">
                           <span>#</span>
-                          <span className="text-3xl font-semibold tracking-tight text-gray-900">
-                            {nutsRank?.yearRankCity}
-                          </span>
+                          {isLoadingRank ? (
+                            <Skeleton className="size-8 rounded-sm" />
+                          ) : (
+                            <span className="text-3xl font-semibold tracking-tight text-gray-900">
+                              {nutsRank?.yearRankCity}
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className="grow text-center">
                         <div className="truncate">{location?.country}</div>
-                        <div className="mt-1">
+                        <div className="mt-1 flex items-center justify-center">
                           <span>#</span>
-                          <span className="text-3xl font-semibold tracking-tight text-gray-900">
-                            {nutsRank?.yearRankCountry}
-                          </span>
+                          {isLoadingRank ? (
+                            <Skeleton className="size-8 rounded-sm" />
+                          ) : (
+                            <span className="text-3xl font-semibold tracking-tight text-gray-900">
+                              {nutsRank?.yearRankCountry}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
