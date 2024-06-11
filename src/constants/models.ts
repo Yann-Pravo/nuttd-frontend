@@ -15,7 +15,7 @@ export interface User {
   profile: Profile;
   followers: User[];
   following: User[];
-  guilds: string[];
+  guilds: { id: string; name: string }[];
   nuts: string[];
   location: LocationNuttd;
 }

@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { PlusCircledIcon } from '@radix-ui/react-icons';
 
-import { Button } from '@/components/ui/button';
 import {
   Drawer,
   DrawerContent,
@@ -10,28 +8,24 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import CreateNutForm from './CreateNutForm';
+import CreateGuildForm from './CreateGuildForm';
 
-const CreateNut = () => {
+const CreateGuild: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <Drawer onOpenChange={(open) => setIsOpen(open)} open={isOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="ghost-secondary" size="icon-secondary">
-          <PlusCircledIcon className="size-8" />
-        </Button>
-      </DrawerTrigger>
+      <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
-            <DrawerTitle>Share your nut</DrawerTitle>
+            <DrawerTitle>Create your guild</DrawerTitle>
             <DrawerDescription>
-              Tell the world you just nutted.
+              Build a guild to share your nuts with your friends.
             </DrawerDescription>
           </DrawerHeader>
           <div className="p-4 pb-12">
-            <CreateNutForm onCallback={() => setIsOpen(false)} />
+            <CreateGuildForm onCallback={() => setIsOpen(false)} />
           </div>
         </div>
       </DrawerContent>
@@ -39,4 +33,4 @@ const CreateNut = () => {
   );
 };
 
-export default CreateNut;
+export default CreateGuild;

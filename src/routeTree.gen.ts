@@ -15,6 +15,8 @@ import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as AuthIndexImport } from './routes/_auth.index'
+import { Route as AuthGuildsIndexImport } from './routes/_auth.guilds.index'
+import { Route as AuthGuildsGuildIdImport } from './routes/_auth.guilds.$guildId'
 
 // Create/Update Routes
 
@@ -35,6 +37,16 @@ const AuthRoute = AuthImport.update({
 
 const AuthIndexRoute = AuthIndexImport.update({
   path: '/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthGuildsIndexRoute = AuthGuildsIndexImport.update({
+  path: '/guilds/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthGuildsGuildIdRoute = AuthGuildsGuildIdImport.update({
+  path: '/guilds/$guildId',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -70,13 +82,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/guilds/$guildId': {
+      id: '/_auth/guilds/$guildId'
+      path: '/guilds/$guildId'
+      fullPath: '/guilds/$guildId'
+      preLoaderRoute: typeof AuthGuildsGuildIdImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/guilds/': {
+      id: '/_auth/guilds/'
+      path: '/guilds'
+      fullPath: '/guilds'
+      preLoaderRoute: typeof AuthGuildsIndexImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-  AuthRoute: AuthRoute.addChildren({ AuthIndexRoute }),
+  AuthRoute: AuthRoute.addChildren({
+    AuthIndexRoute,
+    AuthGuildsGuildIdRoute,
+    AuthGuildsIndexRoute,
+  }),
   LoginRoute,
   SignupRoute,
 })
@@ -97,7 +127,9 @@ export const routeTree = rootRoute.addChildren({
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/"
+        "/_auth/",
+        "/_auth/guilds/$guildId",
+        "/_auth/guilds/"
       ]
     },
     "/login": {
@@ -108,6 +140,14 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_auth/": {
       "filePath": "_auth.index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/guilds/$guildId": {
+      "filePath": "_auth.guilds.$guildId.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/guilds/": {
+      "filePath": "_auth.guilds.index.tsx",
       "parent": "/_auth"
     }
   }

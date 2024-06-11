@@ -1,8 +1,6 @@
-import { useRouter } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import ROUTES from 'constants/paths';
 import { useAuth } from 'contexts/auth';
-import { useEffect } from 'react';
-import { Route } from 'routes/_auth.index';
 import nutLogo from '../../assets/images/nut_64.png';
 import {
   Disclosure,
@@ -22,13 +20,13 @@ import {
 } from '@radix-ui/react-icons';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import CreateNut from './CreateNut';
+import { Button } from '@/components/ui/button';
 
 const navigation = [
-  { name: 'Home', href: '#', current: true },
+  { name: 'Home', href: ROUTES.HOME, current: true },
   { name: 'Maps', href: '#', current: false },
-  { name: 'Guilds', href: '#', current: false },
+  { name: 'Guilds', href: ROUTES.GUILDS, current: false },
 ];
 
 const DashboardHeader = () => {
@@ -51,24 +49,33 @@ const DashboardHeader = () => {
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
-                      className={cn(
-                        item.current
-                          ? 'border-pink-600 text-gray-900'
-                          : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                        'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium',
-                      )}
+                      to={item.href}
                       aria-current={item.current ? 'page' : undefined}
                     >
-                      {item.name}
-                    </a>
+                      {({ isActive }) => (
+                        <div
+                          className={cn(
+                            isActive
+                              ? 'border-pink-600 text-gray-900'
+                              : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                            'inline-flex h-full items-center border-b-2 px-1 pt-1 text-sm font-medium',
+                          )}
+                        >
+                          {item.name}
+                        </div>
+                      )}
+                    </Link>
                   ))}
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                <CreateNut />
+                <CreateNut>
+                  <Button variant="ghost-secondary" size="icon-secondary">
+                    <PlusCircledIcon className="size-8" />
+                  </Button>
+                </CreateNut>
                 <button
                   type="button"
                   className="relative ml-3 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:ring-offset-2"
@@ -137,7 +144,11 @@ const DashboardHeader = () => {
                 </DisclosureButton>
               </div>
               <div className="absolute bottom-4 right-4 sm:hidden">
-                <CreateNut />
+                <CreateNut>
+                  <Button variant="ghost-secondary" size="icon-secondary">
+                    <PlusCircledIcon className="size-8" />
+                  </Button>
+                </CreateNut>
               </div>
             </div>
           </div>
@@ -147,17 +158,23 @@ const DashboardHeader = () => {
               {navigation.map((item) => (
                 <DisclosureButton
                   key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={cn(
-                    item.current
-                      ? 'border-pink-600 bg-indigo-50 text-indigo-700'
-                      : 'border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800',
-                    'block border-l-4 py-2 pl-3 pr-4 text-base font-medium',
-                  )}
                   aria-current={item.current ? 'page' : undefined}
+                  className="block text-base font-medium"
                 >
-                  {item.name}
+                  <Link to={item.href}>
+                    {({ isActive }) => (
+                      <div
+                        className={cn(
+                          isActive
+                            ? 'border-pink-600 bg-indigo-50 text-indigo-700'
+                            : 'border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800',
+                          'border-l-4 py-2 pl-3 pr-4',
+                        )}
+                      >
+                        {item.name}
+                      </div>
+                    )}
+                  </Link>
                 </DisclosureButton>
               ))}
             </div>

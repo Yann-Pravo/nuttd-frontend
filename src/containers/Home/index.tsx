@@ -1,8 +1,10 @@
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import useGetNutsCount from 'api/nut/getNutsCount';
 import useGetNutsRank from 'api/nut/getNutsRank';
+import CreateNut from 'containers/shared/CreateNut';
 import { useAuth } from 'contexts/auth';
 
 function Home() {
@@ -121,6 +123,9 @@ function Home() {
                   </div>
                 </CardContent>
               </Card>
+              <CreateNut>
+                <Button>Post a nut</Button>
+              </CreateNut>
             </div>
 
             {/* Middle column */}
