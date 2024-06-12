@@ -51,7 +51,10 @@ const GuildList = () => {
                   <Button
                     variant="secondary"
                     onClick={() =>
-                      navigate({ to: ROUTES.GUILD_ID, params: { guildId: id } })
+                      navigate({
+                        to: ROUTES.GUILD_ID,
+                        params: { guildId: guild.id },
+                      })
                     }
                   >
                     See
