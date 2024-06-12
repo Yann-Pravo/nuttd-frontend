@@ -17,7 +17,7 @@ const GuildId = () => {
               <div>Nutters</div>
               <div>Nuts in {format(new Date(), 'MMMM')}</div>
             </div>
-            <div className="mt-2 space-x-4 text-sm">
+            <div className="mt-2 text-sm">
               {guild?.users.map((user) => (
                 <div
                   key={user.id}
