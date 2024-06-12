@@ -33,7 +33,6 @@ const GuildFeed = () => {
               {nut.comment ? (
                 <>
                   <Avatar className="relative mt-3 size-6 flex-none rounded-full bg-gray-50">
-                    {/* <AvatarImage src={nut.profile?.avatar} alt="user image" /> */}
                     <AvatarFallback>
                       {getInitials(nut.displayName)}
                     </AvatarFallback>
@@ -44,7 +43,10 @@ const GuildFeed = () => {
                         <span className="font-medium text-gray-900">
                           {nut.displayName}
                         </span>{' '}
-                        nutted
+                        nutted in{' '}
+                        <span className="font-medium text-gray-900">
+                          {nut.location.city}, {nut.location.country}
+                        </span>
                       </div>
                       <div className="flex-none py-0.5 text-xs leading-5 text-gray-500">
                         {formatDistance(new Date(nut.date), new Date(), {
