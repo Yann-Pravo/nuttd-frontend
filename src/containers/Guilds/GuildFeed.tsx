@@ -24,14 +24,15 @@ const GuildFeed = () => {
               <div
                 className={cn(
                   id === guild?.nuts.length - 1 ? 'h-6' : '-bottom-6',
+                  nut.comment && 'mt-4',
                   'absolute left-0 top-0 flex w-6 justify-center',
                 )}
               >
                 <div className="w-px bg-pink-200" />
               </div>
-              {nut.comment === 'commented' ? (
+              {nut.comment ? (
                 <>
-                  <Avatar>
+                  <Avatar className="relative mt-3 size-6 flex-none rounded-full bg-gray-50">
                     {/* <AvatarImage src={nut.profile?.avatar} alt="user image" /> */}
                     <AvatarFallback>
                       {getInitials(nut.displayName)}

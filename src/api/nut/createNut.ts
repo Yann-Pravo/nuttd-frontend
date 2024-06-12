@@ -4,10 +4,11 @@ import client from '..';
 
 export interface CreateNutProps {
   date: Date;
+  comment: string;
 }
 
-const createNut = async ({ date }: CreateNutProps) => {
-  const { data } = await client.post('/nuts', { date });
+const createNut = async ({ date, comment }: CreateNutProps) => {
+  const { data } = await client.post('/nuts', { date, comment });
 
   return data;
 };

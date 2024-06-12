@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/select';
 import useGetNutsCount from 'api/nut/getNutsCount';
 import useGetNutsRank from 'api/nut/getNutsRank';
+import { Textarea } from '@/components/ui/textarea';
 
 const schema = z.object({
   date: z.date({
@@ -34,12 +35,14 @@ const schema = z.object({
   minutes: z.string({
     message: 'A time is required.',
   }),
+  comment: z.string(),
 });
 
 type FormData = {
   date: Date;
   hours: string;
   minutes: string;
+  comment: string;
 };
 
 interface CreateNutFormProps {
@@ -58,6 +61,7 @@ const CreateNutForm: React.FC<CreateNutFormProps> = ({ onCallback }) => {
   const {
     handleSubmit,
     control,
+    register,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -65,6 +69,7 @@ const CreateNutForm: React.FC<CreateNutFormProps> = ({ onCallback }) => {
       date: new Date(),
       hours: new Date().getHours().toString(),
       minutes: new Date().getMinutes().toString(),
+      comment: '',
     },
   });
 
@@ -73,7 +78,7 @@ const CreateNutForm: React.FC<CreateNutFormProps> = ({ onCallback }) => {
       data.date.setHours(Number(data.hours), Number(data.minutes)),
     );
     createNut(
-      { date: nutDate },
+      { date: nutDate, comment: data.comment },
       {
         onSuccess: async () => {
           reloadUser();
@@ -193,6 +198,16 @@ const CreateNutForm: React.FC<CreateNutFormProps> = ({ onCallback }) => {
             />
           </div>
         </div>
+      </div>
+      <div>
+        <div className="flex items-center justify-between">
+          <Label className="flex items-center">Comment</Label>
+        </div>
+        <Textarea
+          placeholder="Leave a comment"
+          className="resize-none"
+          {...register('comment')}
+        />
       </div>
 
       <div>
