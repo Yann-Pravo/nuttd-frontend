@@ -42,6 +42,11 @@ export interface Guild {
   })[];
 }
 
+export interface Guilds extends Pick<Guild, 'id' | 'isPrivate' | 'name'> {
+  createdAt: Date;
+  userCount: number;
+}
+
 export enum Gender {
   MALE = 'MALE',
   FEMALE = 'FEMALE',
