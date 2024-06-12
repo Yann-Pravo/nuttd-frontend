@@ -50,7 +50,9 @@ const GuildList = () => {
                 {myGuildsId.includes(guild.id) ? (
                   <Button
                     variant="secondary"
-                    onClick={() => onJoinGuild(guild.id)}
+                    onClick={() =>
+                      navigate({ to: ROUTES.GUILD_ID, params: { guildId: id } })
+                    }
                   >
                     See
                   </Button>
