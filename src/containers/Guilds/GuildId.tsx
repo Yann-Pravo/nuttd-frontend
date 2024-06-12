@@ -1,8 +1,4 @@
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useAuth } from 'contexts/auth';
-import CreateGuild from './CreateGuild';
-import { Outlet } from '@tanstack/react-router';
 import useGetGuild from 'api/guild/getGuild';
 import { Route } from 'routes/_auth.guilds.$guildId';
 import { format } from 'date-fns';
@@ -10,8 +6,7 @@ import GuildFeed from './GuildFeed';
 
 const GuildId = () => {
   const { guildId } = Route.useParams();
-  const { data: guild, isFetching } = useGetGuild({ guildId });
-  const { user } = useAuth();
+  const { data: guild } = useGetGuild({ guildId });
 
   return (
     <>
