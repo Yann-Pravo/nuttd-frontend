@@ -15,6 +15,7 @@ import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as AuthIndexImport } from './routes/_auth.index'
+import { Route as AuthGuildsImport } from './routes/_auth.guilds'
 import { Route as AuthGuildsIndexImport } from './routes/_auth.guilds.index'
 import { Route as AuthGuildsGuildIdImport } from './routes/_auth.guilds.$guildId'
 
@@ -40,14 +41,19 @@ const AuthIndexRoute = AuthIndexImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
-const AuthGuildsIndexRoute = AuthGuildsIndexImport.update({
-  path: '/guilds/',
+const AuthGuildsRoute = AuthGuildsImport.update({
+  path: '/guilds',
   getParentRoute: () => AuthRoute,
 } as any)
 
+const AuthGuildsIndexRoute = AuthGuildsIndexImport.update({
+  path: '/',
+  getParentRoute: () => AuthGuildsRoute,
+} as any)
+
 const AuthGuildsGuildIdRoute = AuthGuildsGuildIdImport.update({
-  path: '/guilds/$guildId',
-  getParentRoute: () => AuthRoute,
+  path: '/$guildId',
+  getParentRoute: () => AuthGuildsRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -75,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
+    '/_auth/guilds': {
+      id: '/_auth/guilds'
+      path: '/guilds'
+      fullPath: '/guilds'
+      preLoaderRoute: typeof AuthGuildsImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/': {
       id: '/_auth/'
       path: '/'
@@ -84,17 +97,17 @@ declare module '@tanstack/react-router' {
     }
     '/_auth/guilds/$guildId': {
       id: '/_auth/guilds/$guildId'
-      path: '/guilds/$guildId'
+      path: '/$guildId'
       fullPath: '/guilds/$guildId'
       preLoaderRoute: typeof AuthGuildsGuildIdImport
-      parentRoute: typeof AuthImport
+      parentRoute: typeof AuthGuildsImport
     }
     '/_auth/guilds/': {
       id: '/_auth/guilds/'
-      path: '/guilds'
-      fullPath: '/guilds'
+      path: '/'
+      fullPath: '/guilds/'
       preLoaderRoute: typeof AuthGuildsIndexImport
-      parentRoute: typeof AuthImport
+      parentRoute: typeof AuthGuildsImport
     }
   }
 }
@@ -103,9 +116,11 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   AuthRoute: AuthRoute.addChildren({
+    AuthGuildsRoute: AuthGuildsRoute.addChildren({
+      AuthGuildsGuildIdRoute,
+      AuthGuildsIndexRoute,
+    }),
     AuthIndexRoute,
-    AuthGuildsGuildIdRoute,
-    AuthGuildsIndexRoute,
   }),
   LoginRoute,
   SignupRoute,
@@ -127,9 +142,8 @@ export const routeTree = rootRoute.addChildren({
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/",
-        "/_auth/guilds/$guildId",
-        "/_auth/guilds/"
+        "/_auth/guilds",
+        "/_auth/"
       ]
     },
     "/login": {
@@ -138,17 +152,25 @@ export const routeTree = rootRoute.addChildren({
     "/signup": {
       "filePath": "signup.tsx"
     },
+    "/_auth/guilds": {
+      "filePath": "_auth.guilds.tsx",
+      "parent": "/_auth",
+      "children": [
+        "/_auth/guilds/$guildId",
+        "/_auth/guilds/"
+      ]
+    },
     "/_auth/": {
       "filePath": "_auth.index.tsx",
       "parent": "/_auth"
     },
     "/_auth/guilds/$guildId": {
       "filePath": "_auth.guilds.$guildId.tsx",
-      "parent": "/_auth"
+      "parent": "/_auth/guilds"
     },
     "/_auth/guilds/": {
       "filePath": "_auth.guilds.index.tsx",
-      "parent": "/_auth"
+      "parent": "/_auth/guilds"
     }
   }
 }

@@ -20,6 +20,28 @@ export interface User {
   location: LocationNuttd;
 }
 
+interface GuildUser extends Pick<User, 'id' | 'nuts'> {
+  profile: Pick<Profile, 'displayName'>;
+  nutsMonthlyCount: number;
+}
+
+interface Nut {
+  id: string;
+  date: Date;
+  comment?: string;
+}
+
+export interface Guild {
+  id: string;
+  isPrivate: boolean;
+  name: string;
+  users: GuildUser[];
+  nuts: (Nut & {
+    displayName: string;
+    location: Pick<LocationNuttd, 'city' | 'country'>;
+  })[];
+}
+
 export enum Gender {
   MALE = 'MALE',
   FEMALE = 'FEMALE',

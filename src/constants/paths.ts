@@ -1,6 +1,6 @@
 enum ROUTES {
   HOME = '/',
-  GUILDS = '/guilds/',
+  GUILDS = '/guilds',
   GUILD_ID = '/guilds/$guildId',
   LOGIN = '/login',
   SIGNUP = '/signup',
