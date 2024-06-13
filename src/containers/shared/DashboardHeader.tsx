@@ -24,9 +24,9 @@ import CreateNut from './CreateNut';
 import { Button } from '@/components/ui/button';
 
 const navigation = [
-  { name: 'Home', href: ROUTES.HOME, current: true },
-  { name: 'Maps', href: '#', current: false },
-  { name: 'Guilds', href: ROUTES.GUILDS, current: false },
+  { name: 'Home', href: ROUTES.HOME },
+  { name: 'Maps', href: ROUTES.MAPS },
+  { name: 'Guilds', href: ROUTES.GUILDS },
 ];
 
 const DashboardHeader = () => {
@@ -49,11 +49,7 @@ const DashboardHeader = () => {
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      aria-current={item.current ? 'page' : undefined}
-                    >
+                    <Link key={item.name} to={item.href}>
                       {({ isActive }) => (
                         <div
                           className={cn(
@@ -108,7 +104,7 @@ const DashboardHeader = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black focus:outline-none">
                       {userNavigation.map((item) => (
                         <MenuItem key={item.name}>
                           {({ focus }) => (
@@ -158,7 +154,6 @@ const DashboardHeader = () => {
               {navigation.map((item) => (
                 <DisclosureButton
                   key={item.name}
-                  aria-current={item.current ? 'page' : undefined}
                   className="block text-base font-medium"
                 >
                   <Link to={item.href}>

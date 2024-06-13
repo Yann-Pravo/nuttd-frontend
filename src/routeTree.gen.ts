@@ -15,6 +15,7 @@ import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as AuthIndexImport } from './routes/_auth.index'
+import { Route as AuthMapsImport } from './routes/_auth.maps'
 import { Route as AuthGuildsImport } from './routes/_auth.guilds'
 import { Route as AuthGuildsIndexImport } from './routes/_auth.guilds.index'
 import { Route as AuthGuildsGuildIdImport } from './routes/_auth.guilds.$guildId'
@@ -38,6 +39,11 @@ const AuthRoute = AuthImport.update({
 
 const AuthIndexRoute = AuthIndexImport.update({
   path: '/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthMapsRoute = AuthMapsImport.update({
+  path: '/maps',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -88,6 +94,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthGuildsImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/maps': {
+      id: '/_auth/maps'
+      path: '/maps'
+      fullPath: '/maps'
+      preLoaderRoute: typeof AuthMapsImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/': {
       id: '/_auth/'
       path: '/'
@@ -120,6 +133,7 @@ export const routeTree = rootRoute.addChildren({
       AuthGuildsGuildIdRoute,
       AuthGuildsIndexRoute,
     }),
+    AuthMapsRoute,
     AuthIndexRoute,
   }),
   LoginRoute,
@@ -143,6 +157,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_auth.tsx",
       "children": [
         "/_auth/guilds",
+        "/_auth/maps",
         "/_auth/"
       ]
     },
@@ -159,6 +174,10 @@ export const routeTree = rootRoute.addChildren({
         "/_auth/guilds/$guildId",
         "/_auth/guilds/"
       ]
+    },
+    "/_auth/maps": {
+      "filePath": "_auth.maps.tsx",
+      "parent": "/_auth"
     },
     "/_auth/": {
       "filePath": "_auth.index.tsx",

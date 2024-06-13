@@ -1,4 +1,5 @@
-interface LocationNuttd {
+export interface LocationNuttd {
+  id: string;
   city: string;
   country: string;
   countryCode: string;
@@ -6,6 +7,8 @@ interface LocationNuttd {
   region: string;
   regionName: string;
   zip: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface User {
