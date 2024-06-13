@@ -9,7 +9,7 @@ const getGuilds = async (): Promise<Guilds[]> => {
   return data;
 };
 
-const useGetGuilds = (key = 'getGuild', props = {}) =>
+const useGetGuilds = (key = 'getGuilds', props = {}) =>
   useQuery({
     queryKey: [key],
     queryFn: getGuilds,

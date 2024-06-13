@@ -43,10 +43,16 @@ const GuildFeed = () => {
                         <span className="font-medium text-gray-900">
                           {nut.displayName}
                         </span>{' '}
-                        nutted in{' '}
-                        <span className="font-medium text-gray-900">
-                          {nut.location.city}, {nut.location.country}
-                        </span>
+                        nutted
+                        {nut.location && (
+                          <>
+                            {' '}
+                            in{' '}
+                            <span className="font-medium text-gray-900">
+                              {nut.location.city}, {nut.location.country}
+                            </span>
+                          </>
+                        )}
                       </div>
                       <div className="flex-none py-0.5 text-xs leading-5 text-gray-500">
                         {formatDistance(new Date(nut.date), new Date(), {

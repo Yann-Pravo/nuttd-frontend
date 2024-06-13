@@ -8,6 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import useCreateGuild from 'api/guild/createGuild';
 import { toast } from 'sonner';
+import useGetGuilds from 'api/guild/getGuilds';
+import { useNavigate } from '@tanstack/react-router';
+import ROUTES from 'constants/paths';
 
 const schema = z.object({
   name: z.string().min(3, {
@@ -26,6 +29,7 @@ interface CreateGuildFormProps {
 }
 
 const CreateGuildForm: React.FC<CreateGuildFormProps> = ({ onCallback }) => {
+  const navigate = useNavigate();
   const { reloadUser } = useAuth();
   const { mutate: createGuild, isPending } = useCreateGuild();
   const isLoading = isPending;
@@ -45,9 +49,10 @@ const CreateGuildForm: React.FC<CreateGuildFormProps> = ({ onCallback }) => {
 
   const onSubmit = (data: FormData) => {
     createGuild(data, {
-      onSuccess: async () => {
+      onSuccess: async ({ id }) => {
         reloadUser();
         onCallback();
+        navigate({ to: ROUTES.GUILD_ID, params: { guildId: id } });
         toast.success('Guild created');
       },
     });
