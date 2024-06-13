@@ -12,11 +12,10 @@ const Guilds = () => {
     <div className="py-10">
       <main className="pb-8">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-          <h1 className="sr-only">My guilds</h1>
           <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-4 lg:gap-8">
             <Outlet />
 
-            <div className="grid grid-cols-1 gap-4">
+            <div className="sticky top-[104px] grid grid-cols-1 gap-4">
               <Card>
                 <CardContent>
                   <div>
