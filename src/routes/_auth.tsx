@@ -9,10 +9,14 @@ const AuthRoot = () => {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-full">
+    <div className="relative min-h-full">
       {user && !user.profile && <CreateProfile />}
-      <DashboardHeader />
-      <Outlet />
+      <div className="fixed top-0 z-10 w-full">
+        <DashboardHeader />
+      </div>
+      <div className="mt-16 h-full">
+        <Outlet />
+      </div>
     </div>
   );
 };
