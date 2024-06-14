@@ -18,16 +18,22 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Maps = () => {
   const { user } = useAuth();
+  const [zoom, setZoom] = useState(9);
   const [geoScope, setGeoScope] = useState('countries');
   const { data, isFetching } = useGetNutCountByLocation({ geoScope });
 
-  const [zoom, setZoom] = useState(9);
+  const cities = data ? data.cities : [];
+  const countries = data
+    ? Object.keys(data?.countries || {})
+        .map((key) => data.countries[key])
+        .filter(Boolean)
+        .sort((countryA, countryB) =>
+          countryB.nutCount > countryA.nutCount ? 1 : -1,
+        )
+    : [];
 
-  const nutsCountCities = data?.cities.map((city) => city.nutCount) || [];
-  const nutsCountCountries =
-    Object.keys(data?.countries || {}).map(
-      (key) => data?.countries[key].nutCount || 0,
-    ) || [];
+  const nutsCountCities = cities.map((city) => city.nutCount) || [];
+  const nutsCountCountries = countries.map((country) => country.nutCount) || [];
 
   const maxCount =
     geoScope === 'cities'
@@ -70,7 +76,7 @@ const Maps = () => {
                     </div>
                     <div className="mt-2 text-sm">
                       {geoScope === 'cities'
-                        ? data?.cities.map((city) => (
+                        ? cities.map((city) => (
                             <div
                               key={city.id}
                               className=" flex items-center justify-between"
@@ -79,7 +85,7 @@ const Maps = () => {
                               <div>{city.nutCount}</div>
                             </div>
                           ))
-                        : Object.keys(data?.countries || {}).map((key) => (
+                        : countries.map((key) => (
                             <div
                               key={data?.countries[key].countryCode}
                               className=" flex items-center justify-between"
@@ -137,7 +143,7 @@ const Maps = () => {
                         }
                       </Geographies>
                       {geoScope === 'cities' &&
-                        data?.cities.map((city) => (
+                        cities.map((city) => (
                           <Marker
                             key={city.id}
                             coordinates={[city.longitude, city.latitude]}
