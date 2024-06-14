@@ -17,7 +17,7 @@ import { format } from 'date-fns';
 
 const Maps = () => {
   const { user } = useAuth();
-  const { data: cities } = useGetNutCountByLocation();
+  const { data: cities, isFetching } = useGetNutCountByLocation();
 
   const [zoom, setZoom] = useState(9);
 
@@ -58,6 +58,14 @@ const Maps = () => {
             </div>
             <Card className="lg:col-span-3">
               <CardContent className="relative">
+                <div className="absolute flex size-full items-center justify-center">
+                  {isFetching && (
+                    <span className="relative flex size-6 items-center justify-center">
+                      <span className="absolute inline-flex size-full animate-ping rounded-full bg-pink-400 opacity-75"></span>
+                      <span className="relative inline-flex size-3 rounded-full bg-pink-500"></span>
+                    </span>
+                  )}
+                </div>
                 <ComposableMap>
                   <ZoomableGroup
                     center={[
