@@ -13,6 +13,7 @@ import { useAuth } from 'contexts/auth';
 import useGetNutCountByLocation from 'api/location/getNutCountByLocation';
 import { MinusIcon, PlusIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
 
 const Maps = () => {
   const { user } = useAuth();
@@ -32,6 +33,29 @@ const Maps = () => {
       <main className="pb-8">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-4 lg:gap-8">
+            <div className="grid grid-cols-1 gap-4 lg:sticky lg:top-[104px]">
+              <Card>
+                <CardContent>
+                  <div>
+                    <div className=" flex items-center justify-between text-sm font-medium text-gray-500">
+                      <div>Cities</div>
+                      <div>Nuts in {format(new Date(), 'yyyy')}</div>
+                    </div>
+                    <div className="mt-2 text-sm">
+                      {cities?.map((city) => (
+                        <div
+                          key={city.id}
+                          className=" flex items-center justify-between"
+                        >
+                          <div className="font-medium">{`${city.city}, ${city.country}`}</div>
+                          <div>{city.nutCount}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
             <Card className="lg:col-span-3">
               <CardContent className="relative">
                 <ComposableMap>
@@ -44,24 +68,13 @@ const Maps = () => {
                   >
                     <Geographies
                       geography={world}
-                      style={{
-                        fill: '#fbcfe8',
-                      }}
+                      fill="#EAEAEC"
+                      stroke="#D6D6DA"
+                      strokeWidth={0.1}
                     >
                       {({ geographies }) =>
                         geographies.map((geo) => (
-                          <Geography
-                            key={geo.rsmKey}
-                            geography={geo}
-                            style={{
-                              default: {
-                                fill: '#fbcfe8',
-                                stroke: '#fdf2f8',
-                                strokeWidth: 0.1,
-                                outline: 'none',
-                              },
-                            }}
-                          />
+                          <Geography key={geo.rsmKey} geography={geo} />
                         ))
                       }
                     </Geographies>
@@ -95,12 +108,6 @@ const Maps = () => {
                 </div>
               </CardContent>
             </Card>
-
-            <div className="grid grid-cols-1 gap-4 lg:sticky lg:top-[104px]">
-              <Card>
-                <CardContent></CardContent>
-              </Card>
-            </div>
           </div>
         </div>
       </main>
