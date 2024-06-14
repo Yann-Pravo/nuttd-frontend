@@ -96,7 +96,7 @@ const Maps = () => {
               </CardContent>
             </Card>
 
-            <div className="sticky top-[104px] grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 lg:sticky lg:top-[104px]">
               <Card>
                 <CardContent></CardContent>
               </Card>

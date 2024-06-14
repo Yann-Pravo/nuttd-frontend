@@ -10,7 +10,7 @@ const GuildId = () => {
 
   return (
     <>
-      <Card className="sticky top-[104px]">
+      <Card className="lg:sticky lg:top-[104px]">
         <CardContent>
           <div>
             <div className=" flex items-center justify-between text-sm font-medium text-gray-500">

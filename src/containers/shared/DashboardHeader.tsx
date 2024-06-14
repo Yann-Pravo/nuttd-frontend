@@ -44,9 +44,9 @@ const DashboardHeader = () => {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between">
               <div className="flex">
-                <div className="flex shrink-0 items-center">
+                <Link to={ROUTES.HOME} className="flex shrink-0 items-center">
                   <img className="mr-2 size-8" src={nutLogo} alt="Nuttd logo" />
-                </div>
+                </Link>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
                     <Link key={item.name} to={item.href}>
@@ -139,7 +139,7 @@ const DashboardHeader = () => {
                   )}
                 </DisclosureButton>
               </div>
-              <div className="absolute bottom-4 right-4 sm:hidden">
+              <div className="fixed bottom-4 right-4 sm:hidden">
                 <CreateNut>
                   <Button variant="ghost-secondary" size="icon-secondary">
                     <PlusCircledIcon className="size-8" />
@@ -152,25 +152,21 @@ const DashboardHeader = () => {
           <DisclosurePanel className="sm:hidden">
             <div className="space-y-1 pb-3 pt-2">
               {navigation.map((item) => (
-                <DisclosureButton
-                  key={item.name}
-                  className="block text-base font-medium"
-                >
-                  <Link to={item.href}>
-                    {({ isActive }) => (
-                      <div
-                        className={cn(
-                          isActive
-                            ? 'border-pink-600 bg-indigo-50 text-indigo-700'
-                            : 'border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800',
-                          'border-l-4 py-2 pl-3 pr-4',
-                        )}
-                      >
-                        {item.name}
-                      </div>
-                    )}
-                  </Link>
-                </DisclosureButton>
+                <Link to={item.href} key={item.name}>
+                  {({ isActive }) => (
+                    <DisclosureButton
+                      as="div"
+                      className={cn(
+                        isActive
+                          ? 'border-pink-600 bg-indigo-50 text-indigo-700'
+                          : 'border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800',
+                        'block border-l-4 py-2 pl-3 pr-4 text-base font-medium',
+                      )}
+                    >
+                      {item.name}
+                    </DisclosureButton>
+                  )}
+                </Link>
               ))}
             </div>
             <div className="border-t border-gray-200 pb-3 pt-4">

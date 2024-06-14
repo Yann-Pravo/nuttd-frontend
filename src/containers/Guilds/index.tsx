@@ -15,7 +15,7 @@ const Guilds = () => {
           <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-4 lg:gap-8">
             <Outlet />
 
-            <div className="sticky top-[104px] grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 lg:sticky lg:top-[104px]">
               <Card>
                 <CardContent>
                   <div>
