@@ -6,6 +6,7 @@ import useGetNutsCount from 'api/nut/getNutsCount';
 import useGetNutsRank from 'api/nut/getNutsRank';
 import CreateNut from 'containers/shared/CreateNut';
 import { useAuth } from 'contexts/auth';
+import NutsFeed from './NutsFeed';
 
 function Home() {
   const { user } = useAuth();
@@ -136,28 +137,23 @@ function Home() {
                 </h2>
                 <div className="overflow-hidden rounded-lg bg-white shadow">
                   <div className="p-6">
-                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                      coucou {user?.profile?.displayName} sava?
-                    </div>
-                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                      nuts: {user?.nuts?.length}
-                    </div>
+                    <NutsFeed />
                   </div>
                 </div>
               </section>
             </div>
 
             {/* Right column */}
-            <div className="grid grid-cols-1 gap-4">
+            {/* <div className="grid grid-cols-1 gap-4">
               <section aria-labelledby="section-2-title">
                 <h2 className="sr-only" id="section-2-title">
                   Section title
                 </h2>
                 <div className="overflow-hidden rounded-lg bg-white shadow">
-                  <div className="p-6">{/* Your content */}</div>
+                  <div className="p-6">{/* Your content </div>
                 </div>
               </section>
-            </div>
+            </div>*/}
           </div>
         </div>
       </main>

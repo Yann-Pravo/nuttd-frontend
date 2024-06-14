@@ -28,7 +28,7 @@ interface GuildUser extends Pick<User, 'id' | 'nuts'> {
   nutsMonthlyCount: number;
 }
 
-interface Nut {
+export interface Nut {
   id: string;
   date: Date;
   comment?: string;
