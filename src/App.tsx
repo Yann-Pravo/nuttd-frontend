@@ -6,6 +6,7 @@ import useGetUser from 'api/user/getUser';
 import { AuthProvider, useAuth } from 'contexts/auth';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { routeTree } from 'routeTree.gen';
+import Welcome from 'containers/shared/Welcome';
 
 // Set up a Router instance
 const router = createRouter({
@@ -30,7 +31,7 @@ const App: React.FC = () => {
     enabled: true,
   });
 
-  if (isFetching) return null;
+  if (isFetching) return <Welcome />;
 
   return (
     <AuthProvider initialUser={user}>

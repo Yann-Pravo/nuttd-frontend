@@ -10,6 +10,10 @@ path {
   outline: none;
 }
 
+html, body, #root {
+  height: 100%;
+}
+
 @font-face {
   font-family: Rubik;
   src: url('./assets/fonts/Rubik/Rubik-Light.ttf');
