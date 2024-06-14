@@ -85,15 +85,15 @@ const Maps = () => {
                               <div>{city.nutCount}</div>
                             </div>
                           ))
-                        : countries.map((key) => (
+                        : countries.map((country) => (
                             <div
-                              key={data?.countries[key].countryCode}
+                              key={country.countryCode}
                               className=" flex items-center justify-between"
                             >
                               <div className="font-medium">
-                                {data?.countries[key].country}
+                                {country.country}
                               </div>
-                              <div>{data?.countries[key].nutCount}</div>
+                              <div>{country.nutCount}</div>
                             </div>
                           ))}
                     </div>
@@ -103,7 +103,23 @@ const Maps = () => {
             </div>
             <Card className="lg:col-span-3">
               <CardContent>
-                <div className="relative mb-4">
+                <Tabs defaultValue={geoScope} className="w-60">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger
+                      value="countries"
+                      onClick={() => setGeoScope('countries')}
+                    >
+                      Countries
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="cities"
+                      onClick={() => setGeoScope('cities')}
+                    >
+                      Cities
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+                <div className="relative mt-4">
                   <div className="absolute flex size-full items-center justify-center">
                     {isFetching && (
                       <span className="relative flex size-6 items-center justify-center">
@@ -112,7 +128,7 @@ const Maps = () => {
                       </span>
                     )}
                   </div>
-                  <ComposableMap>
+                  <ComposableMap height={500}>
                     <ZoomableGroup
                       center={[
                         Number(user?.location?.longitude) || 5.5,
@@ -175,22 +191,6 @@ const Maps = () => {
                     </Button>
                   </div>
                 </div>
-                <Tabs defaultValue={geoScope} className="w-60">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger
-                      value="countries"
-                      onClick={() => setGeoScope('countries')}
-                    >
-                      Countries
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="cities"
-                      onClick={() => setGeoScope('cities')}
-                    >
-                      Cities
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
               </CardContent>
             </Card>
           </div>
