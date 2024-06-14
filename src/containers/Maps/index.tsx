@@ -77,16 +77,16 @@ const Maps = () => {
                 </ComposableMap>
                 <div className="absolute right-12 top-12 flex flex-col space-y-2">
                   <Button
-                    onClick={() => setZoom(zoom + 1)}
-                    disabled={zoom === 14}
+                    onClick={() => setZoom(zoom + 4)}
+                    disabled={zoom === 33}
                     variant="outline"
                     size="icon"
                   >
                     <PlusIcon className="size-4" />
                   </Button>
                   <Button
-                    onClick={() => setZoom(zoom - 1)}
-                    disabled={zoom === 4}
+                    onClick={() => setZoom(zoom - 4)}
+                    disabled={zoom === 5}
                     variant="outline"
                     size="icon"
                   >
