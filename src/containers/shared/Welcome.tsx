@@ -30,7 +30,7 @@ const Welcome = () => {
       >
         <div
           style={{ height: screenHeight }}
-          className="flex size-full items-center justify-center font-medium text-pink-600"
+          className="flex size-full items-center justify-center text-lg text-pink-600"
         >
           {getRandomWelcomeText()}
         </div>
