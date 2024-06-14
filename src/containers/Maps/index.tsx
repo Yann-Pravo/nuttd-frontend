@@ -22,7 +22,7 @@ const Maps = () => {
 
   const maxCount = Math.max(...(cities?.map((city) => city.nutCount) || []));
   const popScale = useMemo(
-    () => scaleLinear().domain([0, maxCount]).range([0, 4]),
+    () => scaleLinear().domain([0, maxCount]).range([0, 3]),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [maxCount],
   );
