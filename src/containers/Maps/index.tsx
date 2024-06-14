@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { scaleLinear } from 'd3-scale';
 import {
   ComposableMap,
@@ -14,17 +14,42 @@ import useGetNutCountByLocation from 'api/location/getNutCountByLocation';
 import { MinusIcon, PlusIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Maps = () => {
   const { user } = useAuth();
-  const { data: cities, isFetching } = useGetNutCountByLocation();
+  const [geoScope, setGeoScope] = useState('countries');
+  const { data, isFetching } = useGetNutCountByLocation({ geoScope });
 
   const [zoom, setZoom] = useState(9);
 
-  const maxCount = Math.max(...(cities?.map((city) => city.nutCount) || []));
+  const nutsCountCities = data?.cities.map((city) => city.nutCount) || [];
+  const nutsCountCountries =
+    Object.keys(data?.countries || {}).map(
+      (key) => data?.countries[key].nutCount || 0,
+    ) || [];
+
+  const maxCount =
+    geoScope === 'cities'
+      ? Math.max(...nutsCountCities)
+      : Math.max(...nutsCountCountries);
+
   const popScale = useMemo(
     () => scaleLinear().domain([0, maxCount]).range([0, 3]),
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    [maxCount],
+  );
+
+  const scale = useCallback(
+    (value: number) => {
+      const scaleFct = scaleLinear()
+        .domain([0, maxCount])
+        .range([
+          '#EAEAEC' as unknown as number,
+          '#db2777' as unknown as number,
+        ]);
+      return scaleFct(value) as unknown as string;
+    },
     [maxCount],
   );
 
@@ -38,82 +63,128 @@ const Maps = () => {
                 <CardContent>
                   <div>
                     <div className=" flex items-center justify-between text-sm font-medium text-gray-500">
-                      <div>Cities</div>
+                      <div>
+                        {geoScope === 'cities' ? 'Cities' : 'Countries'}
+                      </div>
                       <div>Nuts in {format(new Date(), 'yyyy')}</div>
                     </div>
                     <div className="mt-2 text-sm">
-                      {cities?.map((city) => (
-                        <div
-                          key={city.id}
-                          className=" flex items-center justify-between"
-                        >
-                          <div className="font-medium">{`${city.city}, ${city.country}`}</div>
-                          <div>{city.nutCount}</div>
-                        </div>
-                      ))}
+                      {geoScope === 'cities'
+                        ? data?.cities.map((city) => (
+                            <div
+                              key={city.id}
+                              className=" flex items-center justify-between"
+                            >
+                              <div className="font-medium">{`${city.city}, ${city.country}`}</div>
+                              <div>{city.nutCount}</div>
+                            </div>
+                          ))
+                        : Object.keys(data?.countries || {}).map((key) => (
+                            <div
+                              key={data?.countries[key].countryCode}
+                              className=" flex items-center justify-between"
+                            >
+                              <div className="font-medium">
+                                {data?.countries[key].country}
+                              </div>
+                              <div>{data?.countries[key].nutCount}</div>
+                            </div>
+                          ))}
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
             <Card className="lg:col-span-3">
-              <CardContent className="relative">
-                <div className="absolute flex size-full items-center justify-center">
-                  {isFetching && (
-                    <span className="relative flex size-6 items-center justify-center">
-                      <span className="absolute inline-flex size-full animate-ping rounded-full bg-pink-400 opacity-75"></span>
-                      <span className="relative inline-flex size-3 rounded-full bg-pink-500"></span>
-                    </span>
-                  )}
-                </div>
-                <ComposableMap>
-                  <ZoomableGroup
-                    center={[
-                      Number(user?.location?.longitude) || 5.5,
-                      Number(user?.location?.latitude) || 43,
-                    ]}
-                    zoom={zoom}
-                  >
-                    <Geographies
-                      geography={world}
-                      fill="#EAEAEC"
-                      stroke="#D6D6DA"
-                      strokeWidth={0.1}
+              <CardContent>
+                <div className="relative mb-4">
+                  <div className="absolute flex size-full items-center justify-center">
+                    {isFetching && (
+                      <span className="relative flex size-6 items-center justify-center">
+                        <span className="absolute inline-flex size-full animate-ping rounded-full bg-pink-400 opacity-75"></span>
+                        <span className="relative inline-flex size-3 rounded-full bg-pink-500"></span>
+                      </span>
+                    )}
+                  </div>
+                  <ComposableMap>
+                    <ZoomableGroup
+                      center={[
+                        Number(user?.location?.longitude) || 5.5,
+                        Number(user?.location?.latitude) || 43,
+                      ]}
+                      zoom={zoom}
                     >
-                      {({ geographies }) =>
-                        geographies.map((geo) => (
-                          <Geography key={geo.rsmKey} geography={geo} />
-                        ))
-                      }
-                    </Geographies>
-                    {cities?.map((city) => (
-                      <Marker
-                        key={city.id}
-                        coordinates={[city.longitude, city.latitude]}
+                      <Geographies
+                        geography={world}
+                        fill="#EAEAEC"
+                        stroke="#D6D6DA"
+                        strokeWidth={0.1}
                       >
-                        <circle r={popScale(city.nutCount)} fill="#db2777" />
-                      </Marker>
-                    ))}
-                  </ZoomableGroup>
-                </ComposableMap>
-                <div className="absolute right-12 top-12 flex flex-col space-y-2">
-                  <Button
-                    onClick={() => setZoom(zoom + 4)}
-                    disabled={zoom === 33}
-                    variant="outline"
-                    size="icon"
-                  >
-                    <PlusIcon className="size-4" />
-                  </Button>
-                  <Button
-                    onClick={() => setZoom(zoom - 4)}
-                    disabled={zoom === 5}
-                    variant="outline"
-                    size="icon"
-                  >
-                    <MinusIcon className="size-4" />
-                  </Button>
+                        {({ geographies }) =>
+                          geographies.map((geo) => (
+                            <Geography
+                              key={geo.rsmKey}
+                              geography={geo}
+                              fill={
+                                geoScope === 'countries'
+                                  ? scale(
+                                      data?.countries[geo.id]?.nutCount || 0,
+                                    )
+                                  : undefined
+                              }
+                            />
+                          ))
+                        }
+                      </Geographies>
+                      {geoScope === 'cities' &&
+                        data?.cities.map((city) => (
+                          <Marker
+                            key={city.id}
+                            coordinates={[city.longitude, city.latitude]}
+                          >
+                            <circle
+                              r={popScale(city.nutCount)}
+                              fill="#db2777"
+                            />
+                          </Marker>
+                        ))}
+                    </ZoomableGroup>
+                  </ComposableMap>
+                  <div className="absolute right-4 top-4 flex flex-col space-y-2">
+                    <Button
+                      onClick={() => setZoom(zoom + 4)}
+                      disabled={zoom === 33}
+                      variant="outline"
+                      size="icon"
+                    >
+                      <PlusIcon className="size-4" />
+                    </Button>
+                    <Button
+                      onClick={() => setZoom(zoom - 4)}
+                      disabled={zoom === 5}
+                      variant="outline"
+                      size="icon"
+                    >
+                      <MinusIcon className="size-4" />
+                    </Button>
+                  </div>
                 </div>
+                <Tabs defaultValue={geoScope} className="w-60">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger
+                      value="countries"
+                      onClick={() => setGeoScope('countries')}
+                    >
+                      Countries
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="cities"
+                      onClick={() => setGeoScope('cities')}
+                    >
+                      Cities
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </CardContent>
             </Card>
           </div>

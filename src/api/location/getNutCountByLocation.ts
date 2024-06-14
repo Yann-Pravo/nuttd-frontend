@@ -3,26 +3,37 @@ import { useQuery } from '@tanstack/react-query';
 import client from '..';
 import { LocationNuttd } from 'constants/models';
 
-interface GetNutCountByLocationProps
-  extends Pick<
-    LocationNuttd,
-    'id' | 'city' | 'country' | 'latitude' | 'longitude'
-  > {
-  nutCount: number;
+interface GetNutCountByLocationParams {
+  geoScope: string;
 }
 
-const getNutCountByLocation = async (): Promise<
-  GetNutCountByLocationProps[]
-> => {
-  const { data } = await client.get('/location/nutcount');
+interface GetNutCountByLocationProps {
+  cities: (Pick<
+    LocationNuttd,
+    'id' | 'city' | 'country' | 'latitude' | 'longitude'
+  > & { nutCount: number })[];
+  countries: {
+    [key: string]: Pick<LocationNuttd, 'countryCode' | 'country'> & {
+      nutCount: number;
+    };
+  };
+}
+
+const getNutCountByLocation = async (
+  params: GetNutCountByLocationParams,
+): Promise<GetNutCountByLocationProps> => {
+  const { data } = await client.get('/location/nutcount', { params });
 
   return data;
 };
 
-const useGetNutCountByLocation = (key = 'getNutCountByLocation', props = {}) =>
+const useGetNutCountByLocation = (
+  params: GetNutCountByLocationParams,
+  props = {},
+) =>
   useQuery({
-    queryKey: [key],
-    queryFn: getNutCountByLocation,
+    queryKey: ['getNutCountByLocation', params],
+    queryFn: () => getNutCountByLocation(params),
     retry: false,
     refetchOnWindowFocus: false,
     ...props,
