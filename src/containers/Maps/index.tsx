@@ -149,9 +149,11 @@ const Maps = () => {
                               geography={geo}
                               fill={
                                 geoScope === 'countries'
-                                  ? scale(
-                                      data?.countries[geo.id]?.nutCount || 0,
-                                    )
+                                  ? data?.countries[geo.id]
+                                    ? scale(
+                                        data.countries[geo.id].nutCount || 0,
+                                      )
+                                    : '#EAEAEC'
                                   : undefined
                               }
                             />
