@@ -1,17 +1,25 @@
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import useGetNutsCount from 'api/nut/getNutsCount';
 import useGetNutsRank from 'api/nut/getNutsRank';
 import CreateNut from 'containers/shared/CreateNut';
 import { useAuth } from 'contexts/auth';
 import NutsFeed from './NutsFeed';
+import { useEffect, useState } from 'react';
 
 function Home() {
   const { user } = useAuth();
   const { data: nutsCount, isFetching: isLoadingCount } = useGetNutsCount();
   const { data: nutsRank, isFetching: isLoadingRank } = useGetNutsRank();
+
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setProgress(66), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="py-10">
@@ -29,99 +37,84 @@ function Home() {
             <div className="grid grid-cols-1 gap-4">
               <Card>
                 <CardContent>
-                  <div>
-                    <div className="text-sm font-medium text-gray-500">
-                      This month
+                  <dt className="text-sm font-medium text-gray-500">
+                    Current month
+                  </dt>
+                  <dd className="mt-1 flex md:block lg:flex">
+                    <div className="flex text-4xl font-semibold text-pink-600">
+                      {isLoadingCount ? (
+                        <Skeleton className="h-9 w-4 rounded-sm" />
+                      ) : (
+                        nutsCount?.currentMonthCount
+                      )}
                     </div>
-                    <div className="mt-2 grid grid-cols-3 space-x-4 text-sm">
-                      <div className="flex flex-col items-center text-center">
-                        <div className="mb-1">Nuts</div>
-                        {isLoadingCount ? (
-                          <Skeleton className="h-9 w-4 rounded-sm" />
-                        ) : (
-                          <div className="text-3xl font-semibold tracking-tight text-gray-900">
-                            {nutsCount?.currentMonthCount}
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-center">
-                        <div className="mb-1 truncate">
-                          {user?.location?.city}
+
+                    {isLoadingRank ? (
+                      <Skeleton className="h-9 w-4 rounded-sm" />
+                    ) : (
+                      <div className="ml-2 text-sm font-normal text-gray-900">
+                        <div>
+                          <span className="font-medium">
+                            #{nutsRank?.monthRankCountry}
+                          </span>{' '}
+                          in{' '}
+                          <span className="font-medium">
+                            {user?.location?.country}
+                          </span>
                         </div>
-                        <div className="flex items-center justify-center">
-                          <span>#</span>
-                          {isLoadingRank ? (
-                            <Skeleton className="h-9 w-4 rounded-sm" />
-                          ) : (
-                            <span className="text-3xl font-semibold tracking-tight text-gray-900">
-                              {nutsRank?.monthRankCity}
-                            </span>
-                          )}
+                        <div>
+                          <span className="font-medium">
+                            #{nutsRank?.monthRankCity}
+                          </span>{' '}
+                          in{' '}
+                          <span className="font-medium">
+                            {user?.location?.city}
+                          </span>
                         </div>
                       </div>
-                      <div className="text-center">
-                        <div className="mb-1 truncate">
-                          {user?.location?.country}
-                        </div>
-                        <div className="flex items-center justify-center">
-                          <span>#</span>
-                          {isLoadingRank ? (
-                            <Skeleton className="h-9 w-4 rounded-sm" />
-                          ) : (
-                            <span className="text-3xl font-semibold tracking-tight text-gray-900">
-                              {nutsRank?.monthRankCountry}
-                            </span>
-                          )}
-                        </div>
-                      </div>
+                    )}
+                  </dd>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <dt className="text-sm font-medium text-gray-500">
+                    Current year
+                  </dt>
+                  <dd className="mt-1 flex md:block lg:flex">
+                    <div className="flex text-4xl font-semibold text-pink-600">
+                      {isLoadingCount ? (
+                        <Skeleton className="h-9 w-4 rounded-sm" />
+                      ) : (
+                        nutsCount?.currentYearCount
+                      )}
                     </div>
-                  </div>
-                  <Separator className="my-4" />
-                  <div>
-                    <div className="text-sm font-medium text-gray-500">
-                      This year
-                    </div>
-                    <div className="mt-2 grid grid-cols-3 items-center space-x-4 text-sm">
-                      <div className="flex flex-col items-center text-center">
-                        <div className="mb-1">Nuts</div>
-                        {isLoadingCount ? (
-                          <Skeleton className="h-9 w-4 rounded-sm" />
-                        ) : (
-                          <div className="text-3xl font-semibold tracking-tight text-gray-900">
-                            {nutsCount?.currentYearCount}
-                          </div>
-                        )}
-                      </div>
-                      <div className="grow text-center">
-                        <div className="truncate">{user?.location?.city}</div>
-                        <div className="mt-1 flex items-center justify-center">
-                          <span>#</span>
-                          {isLoadingRank ? (
-                            <Skeleton className="h-9 w-4 rounded-sm" />
-                          ) : (
-                            <span className="text-3xl font-semibold tracking-tight text-gray-900">
-                              {nutsRank?.yearRankCity}
-                            </span>
-                          )}
+
+                    {isLoadingRank ? (
+                      <Skeleton className="h-9 w-4 rounded-sm" />
+                    ) : (
+                      <div className="ml-2 text-sm font-normal text-gray-900">
+                        <div>
+                          <span className="font-medium">
+                            #{nutsRank?.yearRankCountry}
+                          </span>{' '}
+                          in{' '}
+                          <span className="font-medium">
+                            {user?.location?.country}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="font-medium">
+                            #{nutsRank?.yearRankCity}
+                          </span>{' '}
+                          in{' '}
+                          <span className="font-medium">
+                            {user?.location?.city}
+                          </span>
                         </div>
                       </div>
-                      <div className="grow text-center">
-                        <div className="truncate">
-                          {user?.location?.country}
-                        </div>
-                        <div className="mt-1 flex items-center justify-center">
-                          <span>#</span>
-                          {isLoadingRank ? (
-                            <Skeleton className="h-9 w-4 rounded-sm" />
-                          ) : (
-                            <span className="text-3xl font-semibold tracking-tight text-gray-900">
-                              {nutsRank?.yearRankCountry}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    )}
+                  </dd>
                 </CardContent>
               </Card>
               <CreateNut>
@@ -144,16 +137,11 @@ function Home() {
             </div>
 
             {/* Right column */}
-            {/* <div className="grid grid-cols-1 gap-4">
-              <section aria-labelledby="section-2-title">
-                <h2 className="sr-only" id="section-2-title">
-                  Section title
-                </h2>
-                <div className="overflow-hidden rounded-lg bg-white shadow">
-                  <div className="p-6">{/* Your content </div>
-                </div>
-              </section>
-            </div>*/}
+            {/* <Card>
+              <CardContent>
+                <Progress value={progress} />
+              </CardContent>
+            </Card> */}
           </div>
         </div>
       </main>
