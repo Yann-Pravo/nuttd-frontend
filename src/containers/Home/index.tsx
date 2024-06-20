@@ -47,14 +47,17 @@ function Home() {
                   <dd className="mt-1 flex md:block lg:flex">
                     <div className="flex text-4xl font-semibold text-pink-600">
                       {isLoadingCount ? (
-                        <Skeleton className="h-9 w-4 rounded-sm" />
+                        <Skeleton className="h-10 w-6 rounded-sm" />
                       ) : (
                         nutsCount?.currentMonthCount
                       )}
                     </div>
 
                     {isLoadingRank ? (
-                      <Skeleton className="h-9 w-4 rounded-sm" />
+                      <div className="ml-2 space-y-1">
+                        <Skeleton className="h-4 w-20 rounded-sm" />
+                        <Skeleton className="h-4 w-20 rounded-sm" />
+                      </div>
                     ) : (
                       <div className="ml-2 text-sm font-normal text-gray-900">
                         <div>
@@ -88,14 +91,17 @@ function Home() {
                   <dd className="mt-1 flex md:block lg:flex">
                     <div className="flex text-4xl font-semibold text-pink-600">
                       {isLoadingCount ? (
-                        <Skeleton className="h-9 w-4 rounded-sm" />
+                        <Skeleton className="h-10 w-9 rounded-sm" />
                       ) : (
                         nutsCount?.currentYearCount
                       )}
                     </div>
 
                     {isLoadingRank ? (
-                      <Skeleton className="h-9 w-4 rounded-sm" />
+                      <div className="ml-2 space-y-1">
+                        <Skeleton className="h-4 w-20 rounded-sm" />
+                        <Skeleton className="h-4 w-20 rounded-sm" />
+                      </div>
                     ) : (
                       <div className="ml-2 text-sm font-normal text-gray-900">
                         <div>
@@ -144,13 +150,13 @@ function Home() {
             <div className="grid grid-cols-1 gap-4">
               <Card>
                 <CardContent>
-                  <div className="mb-2">
+                  <div className="mb-2 flex items-baseline">
                     {nutsCount ? (
                       <span className="text-2xl font-semibold text-pink-600">
                         {nutsCount.nutCountForLast21Days}
                       </span>
                     ) : (
-                      <Skeleton className="h-4 w-8" />
+                      <Skeleton className="h-7 w-6" />
                     )}
                     <span className="ml-1 text-sm font-normal text-gray-900">
                       nuts on the last
@@ -212,7 +218,7 @@ function Home() {
                         )}
                       </>
                     ) : (
-                      <Skeleton className="size-4" />
+                      <Skeleton className="h-10 w-16" />
                     )}
                   </div>
                 </CardContent>
