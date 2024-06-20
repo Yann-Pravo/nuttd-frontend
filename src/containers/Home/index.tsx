@@ -8,6 +8,8 @@ import CreateNut from 'containers/shared/CreateNut';
 import { useAuth } from 'contexts/auth';
 import NutsFeed from './NutsFeed';
 import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
+import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons';
 
 function Home() {
   const { user } = useAuth();
@@ -17,9 +19,11 @@ function Home() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setProgress(66), 500);
-    return () => clearTimeout(timer);
-  }, []);
+    if (nutsCount) {
+      const percent = (100 * nutsCount.nutCountForLast21Days) / 21;
+      setProgress(Math.min(percent, 100));
+    }
+  }, [nutsCount]);
 
   return (
     <div className="py-10">
@@ -137,11 +141,83 @@ function Home() {
             </div>
 
             {/* Right column */}
-            {/* <Card>
-              <CardContent>
-                <Progress value={progress} />
-              </CardContent>
-            </Card> */}
+            <div className="grid grid-cols-1 gap-4">
+              <Card>
+                <CardContent>
+                  <div className="mb-2">
+                    {nutsCount ? (
+                      <span className="text-2xl font-semibold text-pink-600">
+                        {nutsCount.nutCountForLast21Days}
+                      </span>
+                    ) : (
+                      <Skeleton className="h-4 w-8" />
+                    )}
+                    <span className="ml-1 text-sm font-normal text-gray-900">
+                      nuts on the last
+                    </span>
+                    <span className="ml-1 text-sm font-medium text-gray-900">
+                      21 days
+                    </span>
+                  </div>
+                  <Progress value={progress} />
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <div className="mb-2 text-sm font-normal text-gray-900">
+                    Avg. nuts per day for this quarter
+                  </div>
+                  <div className="flex items-baseline">
+                    {nutsCount ? (
+                      <>
+                        <span className="text-4xl font-semibold text-pink-600">
+                          {nutsCount.currentQuarter}
+                        </span>
+                        {nutsCount.lastQuarter > 0 && (
+                          <p
+                            className={cn(
+                              nutsCount.currentQuarter > nutsCount.lastQuarter
+                                ? 'text-green-600'
+                                : 'text-red-600',
+                              'ml-2 flex items-baseline text-sm font-medium',
+                            )}
+                          >
+                            {nutsCount.currentQuarter >
+                            nutsCount.lastQuarter ? (
+                              <ArrowUpIcon
+                                className="size-4 shrink-0 self-center text-green-500"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <ArrowDownIcon
+                                className="size-4 shrink-0 self-center text-red-500"
+                                aria-hidden="true"
+                              />
+                            )}
+                            <span className="sr-only">
+                              {' '}
+                              {nutsCount.currentQuarter > nutsCount.lastQuarter
+                                ? 'Increased'
+                                : 'Decreased'}{' '}
+                              by{' '}
+                            </span>
+                            {Math.abs(
+                              (100 *
+                                (nutsCount.currentQuarter -
+                                  nutsCount.lastQuarter)) /
+                                nutsCount.lastQuarter,
+                            ).toFixed()}
+                            %
+                          </p>
+                        )}
+                      </>
+                    ) : (
+                      <Skeleton className="size-4" />
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </main>

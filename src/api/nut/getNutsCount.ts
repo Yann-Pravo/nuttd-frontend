@@ -5,6 +5,9 @@ import client from '..';
 interface GetNutsCountProps {
   currentMonthCount: number;
   currentYearCount: number;
+  currentQuarter: number;
+  lastQuarter: number;
+  nutCountForLast21Days: number;
 }
 
 const getNutsCount = async (): Promise<GetNutsCountProps> => {
