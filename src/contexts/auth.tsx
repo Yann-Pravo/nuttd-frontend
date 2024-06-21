@@ -10,6 +10,8 @@ import React, {
   PropsWithChildren,
 } from 'react';
 import { User } from 'constants/models';
+import ROUTES from 'constants/paths';
+import { removeTokens } from 'utils';
 
 export interface AuthContext {
   isAuthenticated: boolean;
@@ -30,6 +32,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   initialUser,
   children,
 }) => {
+  console.log({ initialUser });
   const [user, setUser] = React.useState<User | undefined>(initialUser);
   const { mutate: loginMutation, isPending: isLoginLocalLoading } =
     useLoginLocal();
@@ -49,7 +52,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   }, [userData]);
 
   const logout = useCallback(async () => {
-    await logoutMutation({}, { onSuccess: () => setUser(undefined) });
+    await logoutMutation(
+      {},
+      {
+        onSuccess: async () => {
+          setUser(undefined);
+          removeTokens();
+          window.location.href = ROUTES.LOGIN;
+        },
+      },
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

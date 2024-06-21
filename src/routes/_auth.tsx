@@ -17,10 +17,6 @@ const AuthRoot = () => {
       <div className="mt-16 h-full">
         <Outlet />
       </div>
-      <div className="absolute bottom-4 right-4">
-        <div>ip: {user?.ip}</div>
-        <div>location: {user?.location.city}</div>
-      </div>
     </div>
   );
 };

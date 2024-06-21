@@ -20,7 +20,7 @@ function Home() {
 
   useEffect(() => {
     if (nutsCount) {
-      const percent = (100 * nutsCount.nutCountForLast21Days) / 21;
+      const percent = (100 * nutsCount.nutCountForLast31Days) / 21;
       setProgress(Math.min(percent, 100));
     }
   }, [nutsCount]);
@@ -153,7 +153,7 @@ function Home() {
                   <div className="mb-2 flex items-baseline">
                     {nutsCount ? (
                       <span className="text-2xl font-semibold text-pink-600">
-                        {nutsCount.nutCountForLast21Days}
+                        {nutsCount.nutCountForLast31Days}
                       </span>
                     ) : (
                       <Skeleton className="h-7 w-6" />
@@ -162,7 +162,7 @@ function Home() {
                       nuts on the last
                     </span>
                     <span className="ml-1 text-sm font-medium text-gray-900">
-                      21 days
+                      31 days
                     </span>
                   </div>
                   <Progress value={progress} />

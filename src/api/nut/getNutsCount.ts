@@ -7,7 +7,7 @@ interface GetNutsCountProps {
   currentYearCount: number;
   currentQuarter: number;
   lastQuarter: number;
-  nutCountForLast21Days: number;
+  nutCountForLast31Days: number;
 }
 
 const getNutsCount = async (): Promise<GetNutsCountProps> => {
