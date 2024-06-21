@@ -21,6 +21,7 @@ export interface User {
   guilds: { id: string; name: string }[];
   nuts: string[];
   location: LocationNuttd;
+  ip: string;
 }
 
 interface GuildUser extends Pick<User, 'id' | 'nuts'> {
